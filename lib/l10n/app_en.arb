@@ -1,0 +1,939 @@
+{
+  "@@locale": "en",
+  "ok": "OK",
+  "cancel": "Cancel",
+  "retry": "Try again",
+  "yes": "Yes",
+  "no": "No",
+  "done": "Done",
+  "submit": "Submit",
+  "open": "Open",
+  "openAgain": "Open again",
+  "dismiss": "Dismiss",
+  "someone": "Someone",
+  "system": "System",
+  "somethingWentWrong": "Something went wrong. Try again.",
+  "status": "Status",
+  "due": "Due",
+  "submitted": "Submitted",
+  "result": "Result",
+  "location": "Location",
+  "progress": "Progress",
+  "source": "Source",
+  "deadline": "Deadline",
+  "owner": "Owner",
+  "outlet": "Outlet",
+  "outlets": "Outlets",
+  "offline": "Offline",
+  "language": "Language",
+  "later": "Later",
+  "video": "Video",
+  "document": "Document",
+  "read": "Read",
+  "watch": "Watch",
+  "review": "Review",
+  "comment": "Comment",
+  "feedback": "Feedback",
+  "goals": "Goals",
+  "training": "Training",
+  "team": "Team",
+  "today": "Today",
+  "learn": "Learn",
+  "mentor": "Mentor",
+  "issues": "Issues",
+  "issue": "Issue",
+  "audits": "Audits",
+  "me": "Me",
+  "removePhoto": "Remove photo",
+  "playVideo": "Play video",
+  "videoProcessing": "The video is still processing. Try again in a minute.",
+  "needConnectionToSend": "You need a connection to send this.",
+  "useAdminWeb": "Your role works in the ASAH admin web. Open it on a computer.",
+  "signInHeadline": "Learn it right.\nDo it right. Every shift.",
+  "signIn": "Sign in",
+  "signInSub": "Use the phone number your outlet registered for you.",
+  "phoneNumber": "Phone number",
+  "sendCode": "Send code",
+  "noAccount": "No account yet? Ask your outlet manager to add you.",
+  "changeNumber": "Change number",
+  "enterCode": "Enter the 6-digit code",
+  "sentTo": "Sent by SMS to {phone}",
+  "@sentTo": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "resendIn": "Resend code in {seconds}s",
+  "@resendIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "resendCode": "Resend code",
+  "verifyAndContinue": "Verify and continue",
+  "wrongCode": "That code did not work. Check it and try again.",
+  "phoneNotRegistered": "This number is not registered. Ask your outlet manager to add you.",
+  "accountNotReady": "Your account is not ready",
+  "accountNotReadyBody": "Your account has no profile yet or is inactive. Ask your outlet manager or HQ to set it up.",
+  "signOut": "Sign out",
+  "signOutQ": "Sign out?",
+  "signOutUnsynced": "{count} items have not synced yet and will be lost.",
+  "@signOutUnsynced": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hiName": "Hi, {name}",
+  "@hiName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "todaysTasks": "Today's tasks",
+  "doneOfTotal": "{done} of {total} done",
+  "@doneOfTotal": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "noTasksToday": "No checklists for you today.",
+  "myLearning": "My learning",
+  "myPath": "My path",
+  "yourMentor": "Your mentor",
+  "weeklyCheckinWithMentor": "Weekly check-in with your mentor",
+  "dayN": "Day {n}",
+  "@dayN": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "shiftOpening": "Opening shift",
+  "shiftMid": "Mid-day shift",
+  "shiftClosing": "Closing shift",
+  "shiftOther": "Any time",
+  "dueAt": "Due {time}",
+  "@dueAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "lateDue": "Late · due {time}",
+  "@lateDue": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "doneLate": "Done late",
+  "missed": "Missed",
+  "itemsCount": "{count, plural, =1{1 item} other{{count} items}}",
+  "@itemsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "needPhotoCount": "{count} need a photo",
+  "@needPhotoCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "startedCount": "{count} answered",
+  "@startedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "submittedAtTime": "Submitted {time}",
+  "@submittedAtTime": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "startChecklist": "Start checklist",
+  "continueChecklist": "Continue",
+  "startAudit": "Start audit",
+  "waitingToSync": "Submitted on this phone. It will sync when you are back online.",
+  "waitingToSyncShort": "Waiting to sync",
+  "itemsWaitingToSync": "{count, plural, =1{1 item waiting to sync} other{{count} items waiting to sync}}",
+  "@itemsWaitingToSync": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "syncFailed": "{label} could not be sent: {error}",
+  "@syncFailed": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "syncNow": "Sync now",
+  "doneOfDue": "{done} of {total} done · Due {time}",
+  "@doneOfDue": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineAnswersSaved": "Offline. Answers are saved and sync when you're back.",
+  "photoRequired": "Photo required",
+  "takePhoto": "Take photo",
+  "addAnotherPhoto": "Add another photo",
+  "inAppCameraOnly": "In-app camera only",
+  "inAppCamera": "in-app camera",
+  "raisesIssue": "This will raise an issue for the outlet manager.",
+  "outOfRangeRaisesIssue": "Out of range. This will raise an issue for the outlet manager.",
+  "allowedRange": "Allowed {min} to {max} {unit}",
+  "@allowedRange": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "allowedMin": "At least {min} {unit}",
+  "@allowedMin": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "allowedMax": "At most {max} {unit}",
+  "@allowedMax": {
+    "placeholders": {
+      "max": {
+        "type": "String"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "writeANote": "Write a note",
+  "timeLocationAdded": "{outlet} · time and location added on submit",
+  "@timeLocationAdded": {
+    "placeholders": {
+      "outlet": {
+        "type": "String"
+      }
+    }
+  },
+  "submitRaisesIssues": "{count, plural, =1{Submit · raises 1 issue} other{Submit · raises {count} issues}}",
+  "@submitRaisesIssues": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "itemsStillMissing": "{count, plural, =1{1 item still needs an answer or photo.} other{{count} items still need an answer or photo.}}",
+  "@itemsStillMissing": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "locationOff": "Turn on location to submit. The checklist is stamped with where it was done.",
+  "locationDenied": "ASAH needs location access to submit checklists. Allow it in Settings.",
+  "outsideOutletTitle": "You seem to be outside the outlet",
+  "outsideOutletBody": "You are about {meters} m from {outlet}. Checklists can only be submitted inside the outlet area.",
+  "@outsideOutletBody": {
+    "placeholders": {
+      "outlet": {
+        "type": "String"
+      },
+      "meters": {
+        "type": "int"
+      }
+    }
+  },
+  "submitAnyway": "Try anyway",
+  "savedOfflineWillSync": "Saved. It will be sent when you are back online.",
+  "submittedThanks": "Submitted. Thank you!",
+  "submittedWithIssues": "{count, plural, =1{Submitted. 1 issue sent to the outlet manager.} other{Submitted. {count} issues sent to the outlet manager.}}",
+  "@submittedWithIssues": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "submittedLate": "Submitted late",
+  "submittedOnTime": "Submitted on time",
+  "late": "Late",
+  "notDoneYet": "Not done yet",
+  "passedOf": "{passed} of {total} passed",
+  "@passedOf": {
+    "placeholders": {
+      "passed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "insideOutlet": "Inside the outlet",
+  "outsideOutlet": "Outside the outlet",
+  "runMissedInfo": "This checklist was not done before its deadline. The outlet manager was alerted.",
+  "runNotSubmittedYet": "Not submitted yet.",
+  "failedRaisedIssue": "Failed · raised an issue",
+  "photoCount": "{count, plural, =1{1 photo} other{{count} photos}}",
+  "@photoCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noModulesYet": "No modules assigned yet.",
+  "assignedToYou": "Assigned to you",
+  "day1": "Day 1",
+  "week1": "Week 1",
+  "month1": "Month 1",
+  "upNext": "Up next",
+  "upNextModuleOf": "Up next · Module {n} of {total}",
+  "@upNextModuleOf": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "pathComplete": "Path complete. Well done!",
+  "minutesShort": "{n} min",
+  "@minutesShort": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "overdue": "Overdue",
+  "refresher": "Refresher",
+  "updated": "Updated",
+  "dueDate": "Due {date}",
+  "@dueDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "moduleOfPath": "Module {n} of {total} · {path}",
+  "@moduleOfPath": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "moduleCompleted": "You completed this module.",
+  "moduleCompletedCertificate": "You completed this module. Your certificate is in Me › Certificates.",
+  "markWatched": "Mark watched",
+  "markAsRead": "Mark as read",
+  "sopCard": "SOP card",
+  "quiz": "Quiz",
+  "quizPassMark": "Quiz · pass mark {pct}%",
+  "@quizPassMark": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      }
+    }
+  },
+  "passed": "Passed",
+  "attemptsLeft": "{count, plural, =1{1 try left} other{{count} tries left}}",
+  "@attemptsLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "lastScore": "Last score {pct}",
+  "@lastScore": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "finishLessonsFirst": "Tip: watch and read the lessons before the quiz.",
+  "noAttemptsLeft": "No tries left. Ask your mentor for a refresher.",
+  "startQuiz": "Start quiz",
+  "retakeQuiz": "Retake quiz",
+  "practicalTest": "Practical test",
+  "practicalHowTo": "Record yourself doing it in the app. Your mentor scores each line.",
+  "practicalWaiting": "Sent. Waiting for your mentor to score it.",
+  "practicalPassed": "Your mentor passed your practical test.",
+  "practicalRedo": "Your mentor asked you to redo it. Read the feedback below.",
+  "pass": "Pass",
+  "redo": "Redo",
+  "mentorFeedback": "Mentor feedback",
+  "recordPracticalTest": "Record practical test",
+  "recordAgain": "Record again",
+  "saveForOffline": "Save videos for offline",
+  "savedForOffline": "Saved. You can watch this module offline.",
+  "downloadPreparing": "Preparing the download. Try again in a minute.",
+  "questionOf": "Question {n} of {total}",
+  "@questionOf": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "previous": "Back",
+  "nextQuestion": "Next question",
+  "submitAnswers": "Submit answers",
+  "backToModule": "Back to module",
+  "quizHasNoQuestions": "This quiz has no questions yet.",
+  "quizPassedMessage": "You passed. Nice work!",
+  "quizFailedMessage": "Not yet. You need {pct}% to pass. Review the lessons and try again.",
+  "@quizFailedMessage": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      }
+    }
+  },
+  "recordInApp": "Recorded in the app only",
+  "whatMentorChecks": "What your mentor checks",
+  "record": "Record",
+  "sendToMentor": "Send to mentor",
+  "practicalSent": "Sent to your mentor.",
+  "learningPath": "Learning path",
+  "certificates": "Certificates",
+  "noCertificatesYet": "No certificates yet. Finish a module to earn one.",
+  "issuedOn": "Issued {date}",
+  "@issuedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "validUntil": "Valid until {date}",
+  "@validUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "expired": "Expired",
+  "expiresSoon": "Expires soon",
+  "myTrainees": "My trainees",
+  "noTraineesYet": "No trainees yet. Your outlet manager assigns them.",
+  "toDo": "To do",
+  "scorePracticalTest": "Score practical test",
+  "weeklyCheckinDue": "Weekly check-in due",
+  "thisWeek": "this week",
+  "behind": "Behind",
+  "onTrack": "On track",
+  "failedQuizTwice": "Failed a quiz twice",
+  "pathPct": "Path {pct}%",
+  "@pathPct": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      }
+    }
+  },
+  "lastQuiz": "Last quiz {pct}",
+  "@lastQuiz": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "modulesOverdue": "{count, plural, =1{1 module overdue} other{{count} modules overdue}}",
+  "@modulesOverdue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "myRatingAverage": "My rating: {avg} from {count} trainees. Ratings are anonymous.",
+  "@myRatingAverage": {
+    "placeholders": {
+      "avg": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "myRatingHidden": "My rating: shown as an average after {count} trainees rate you. Ratings are anonymous.",
+  "@myRatingHidden": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "weeklyCheckins": "Weekly check-ins",
+  "weeklyCheckin": "Weekly check-in",
+  "logCheckin": "Log check-in",
+  "noCheckinsYet": "No check-ins yet.",
+  "noCheckinsYetTrainee": "Your mentor has not logged a check-in yet.",
+  "weekOf": "Week of {date}",
+  "@weekOf": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "feedbackHint": "What went well, what to work on",
+  "goalsNextWeek": "Goals for next week",
+  "traineeSeesCheckin": "Your trainee can read this check-in.",
+  "saveCheckin": "Save check-in",
+  "checkinSaved": "Check-in saved.",
+  "rubric": "Rubric",
+  "scoreEveryLine": "Score every rubric line first.",
+  "practicalMarkedPassed": "Passed. The trainee was notified.",
+  "practicalAskedRedo": "Asked to redo. The trainee was notified.",
+  "askToRedo": "Ask to redo",
+  "feedbackFor": "Feedback for {name}",
+  "@feedbackFor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "recordedInApp": "Recorded in app · {when}",
+  "@recordedInApp": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "alreadyScored": "This test was already scored.",
+  "mentorSince": "Your mentor since {date}",
+  "@mentorSince": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "mentorHelpNote": "Ask your mentor anything about your work. They score your practical tests and check in every week.",
+  "rateYourMentor": "Rate your mentor",
+  "rateMentorPrompt": "Rate {name}, your mentor",
+  "@rateMentorPrompt": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "howWasMentor": "How was {name} as your mentor?",
+  "@howWasMentor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "commentOptional": "Comment (optional)",
+  "ratingAnonymousNote": "Your mentor only sees an average from several trainees, never your name.",
+  "sendRating": "Send rating",
+  "thanksForRating": "Thank you for your rating.",
+  "raiseIssue": "Raise issue",
+  "yourArea": "Your area",
+  "raisedByOrAssignedToYou": "Raised by you or assigned to you",
+  "checkFix": "Check fix",
+  "closed": "Closed",
+  "noIssuesHere": "Nothing here.",
+  "escalated": "Escalated",
+  "notAssigned": "Not assigned",
+  "assigned": "Assigned",
+  "severityHigh": "High",
+  "severityMedium": "Medium",
+  "severityLow": "Low",
+  "fromChecklist": "From {name}",
+  "@fromChecklist": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "fromAudit": "Audit · {name}",
+  "@fromAudit": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "raisedByHand": "Raised by hand",
+  "closedAt": "Closed {when}",
+  "@closedAt": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "fixWaitingForCheck": "Fixed {time} · waiting for a check",
+  "@fixWaitingForCheck": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "lateSince": "Late since {when}",
+  "@lateSince": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "dueEscalatesAfter": "Due {when} · escalates to area manager after",
+  "@dueEscalatesAfter": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "ifLate": "If late",
+  "escalatedAt": "Escalated {when}",
+  "@escalatedAt": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "escalatesToArea": "Escalates to area manager",
+  "eventRaised": "Raised",
+  "eventAssigned": "Assigned",
+  "eventFixed": "Fixed with proof photo",
+  "eventAccepted": "Fix accepted · closed",
+  "eventReopened": "Reopened",
+  "eventEscalated": "Escalated to area manager",
+  "eventComment": "Comment",
+  "waitingForManager": "Waiting for the outlet manager",
+  "fixedWithProof": "Fixed with proof photo",
+  "byTheOwner": "By the owner",
+  "acceptedOrReopened": "Accepted or reopened",
+  "notTheFixer": "By whoever raised it or the area manager, not the fixer",
+  "assignTo": "Assign to",
+  "assignedNotified": "Assigned to {name}, notified by push.",
+  "@assignedNotified": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "whatDidYouFix": "What did you fix?",
+  "optionalNote": "Optional note",
+  "markedFixed": "Marked fixed. Someone else will check it.",
+  "issueClosedMsg": "Fix accepted. Issue closed.",
+  "whyReopen": "Why reopen it?",
+  "reopenHint": "What still needs fixing",
+  "issueReopenedMsg": "Reopened. The fixer was notified.",
+  "addComment": "Add a comment",
+  "commentAdded": "Comment added.",
+  "assignRefresher": "Assign a refresher module",
+  "refresherAssigned": "Refresher assigned.",
+  "reopen": "Reopen",
+  "acceptFix": "Accept fix",
+  "assignOwner": "Assign owner",
+  "changeOwner": "Change owner",
+  "markFixed": "Mark fixed",
+  "waitingForSomeoneToCheck": "You fixed this. Someone else will check it.",
+  "whatIsWrong": "What's wrong?",
+  "whatIsWrongHint": "e.g. Hand soap empty",
+  "detailsOptional": "Details (optional)",
+  "howUrgent": "How urgent?",
+  "fixWithinHours": "Fix within {hours} hours, then it escalates.",
+  "@fixWithinHours": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "addPhoto": "Add photo",
+  "issueRaised": "Issue raised.",
+  "outletManager": "Outlet manager",
+  "outletToday": "{name} · Today",
+  "@outletToday": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "noOutletAssigned": "No outlet assigned to you yet.",
+  "checklistsByShift": "Checklists by shift",
+  "noChecklistsScheduledToday": "No checklists scheduled today.",
+  "openIssues": "Open issues",
+  "allIssues": "All issues",
+  "noOpenIssues": "No open issues.",
+  "checklistsDone": "Checklists done",
+  "lateChecklists": "Late checklists",
+  "doneFailedItems": "{count, plural, =1{Done · 1 failed} other{Done · {count} failed}}",
+  "@doneFailedItems": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "everyoneOnSchedule": "Everyone is on schedule.",
+  "personBehind": "{name} behind schedule",
+  "@personBehind": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "mentorName": "Mentor: {name}",
+  "@mentorName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "myTasks": "My tasks",
+  "mentorsN": "{count, plural, =1{mentors 1} other{mentors {count}}}",
+  "@mentorsN": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "signoffsToSpotCheck": "{count, plural, =1{1 mentor sign-off to spot-check} other{{count} mentor sign-offs to spot-check}}",
+  "@signoffsToSpotCheck": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noMentorYet": "No mentor yet",
+  "sinceDate": "since {date}",
+  "@sinceDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "assignMentor": "Assign mentor",
+  "changeMentor": "Change mentor",
+  "endMentorship": "End mentorship",
+  "endMentorshipQ": "End this mentorship?",
+  "endMentorshipBody": "Do this when the trainee finished their path. The trainee can then rate the mentor.",
+  "mentorshipEnded": "Mentorship ended.",
+  "assignModule": "Assign module",
+  "moduleAssigned": "Module assigned.",
+  "pickMentor": "Pick a mentor",
+  "mentorRulesNote": "Mentors need the Mentor role, a minimum level, their own path done and room for another trainee. ASAH checks this.",
+  "levelN": "Level {n}",
+  "@levelN": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "mentorAssigned": "{name} is now the mentor.",
+  "@mentorAssigned": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "mentorSignoffs": "Mentor sign-offs",
+  "spotCheckExplainer": "Check a sample of practical tests your mentors scored. Watch the video and say if you agree.",
+  "scoredByOn": "Scored by {name} · {when}",
+  "@scoredByOn": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "spotChecked": "Spot-checked",
+  "agree": "Agree",
+  "disagree": "Disagree",
+  "whatIsWrongWithSignoff": "What is wrong with this sign-off?",
+  "spotCheckSaved": "Spot check saved.",
+  "areaOverview": "Area overview",
+  "outletsN": "{count, plural, =1{1 outlet} other{{count} outlets}}",
+  "@outletsN": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "last7Days": "Last 7 days",
+  "checklistsOnTime": "Checklists on time",
+  "lateEscalated": "Late issues, escalated",
+  "trainingOnSchedule": "Training on schedule",
+  "byOutlet": "By outlet",
+  "escalatedToYou": "Escalated to you",
+  "openIssuesN": "{count} open issues",
+  "@openIssuesN": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "lateN": "{count} late",
+  "@lateN": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "trainingOnScheduleShort": "Training on schedule",
+  "traineesBehindN": "{count, plural, =1{1 trainee behind} other{{count} trainees behind}}",
+  "@traineesBehindN": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noAuditYet": "No audit yet",
+  "lastAuditDaysAgo": "{days, plural, =0{Audited today} =1{Last audit yesterday} other{Last audit {days} days ago}}",
+  "@lastAuditDaysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "visitAudits": "Visit audits",
+  "auditsExplainer": "Findings become issues for the outlet",
+  "noAuditsYet": "No audits yet. Start one when you visit an outlet.",
+  "noAuditForms": "HQ has not published an audit form yet.",
+  "auditForm": "Audit form",
+  "auditScore": "Score {score} · {date}",
+  "@auditScore": {
+    "placeholders": {
+      "score": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "inProgressSince": "In progress since {date}",
+  "@inProgressSince": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "findingsN": "{count, plural, =1{1 finding} other{{count} findings}}",
+  "@findingsN": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "notifications": "Notifications",
+  "markAllRead": "Mark all read",
+  "noNotifications": "No notifications yet.",
+  "notificationsUnread": "Notifications, {count} new",
+  "@notificationsUnread": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
+}
