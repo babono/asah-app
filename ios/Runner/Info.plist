@@ -2,12 +2,29 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraUsageDescription</key>
+	<string>ASAH uses the camera for checklist proof photos and practical test videos.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>ASAH records sound with your practical test video so your mentor can score it.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>ASAH adds your location when you submit a checklist, to show it was done at the outlet.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>ASAH only takes photos with the camera; it does not read your photo library.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>id</string>
+	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Asah</string>
+	<string>ASAH</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>

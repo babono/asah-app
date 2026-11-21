@@ -251,7 +251,7 @@ class LearningRepository {
   Future<List<({String moduleId, String versionId, String title, String category})>> publishedModules() async {
     final rows = await _db
         .from('module_versions')
-        .select('id, module_id, title, modules(category)')
+        .select('id, module_id, title, modules!module_versions_module_id_fkey(category)')
         .eq('status', 'published')
         .order('title');
     return (rows as List)

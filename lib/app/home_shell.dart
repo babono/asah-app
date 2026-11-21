@@ -128,6 +128,25 @@ class _HomeShellState extends ConsumerState<HomeShell> {
       };
 }
 
+/// Shows [child] once the session is loaded.
+class SessionGate extends ConsumerWidget {
+  const SessionGate({super.key, required this.child});
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final session = ref.watch(sessionProvider);
+    if (session.value != null) return child;
+    if (session.hasError) {
+      return Scaffold(
+        appBar: AppBar(),
+        body: ErrorState(message: session.error.toString(), onRetry: () => ref.invalidate(sessionProvider)),
+      );
+    }
+    return const Scaffold(body: Center(child: CircularProgressIndicator()));
+  }
+}
+
 class _NoAccessScreen extends ConsumerWidget {
   const _NoAccessScreen();
 

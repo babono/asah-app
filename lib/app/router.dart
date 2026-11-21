@@ -32,6 +32,10 @@ final routerProvider = Provider<GoRouter>((ref) {
 
   String p(GoRouterState s, String name) => s.pathParameters[name]!;
 
+  // Screens opened from a push tap can build before the session loads.
+  GoRoute route(String path, Widget Function(GoRouterState s) build) =>
+      GoRoute(path: path, builder: (_, s) => SessionGate(child: build(s)));
+
   return GoRouter(
     navigatorKey: rootNavigatorKey,
     initialLocation: '/',
@@ -46,24 +50,24 @@ final routerProvider = Provider<GoRouter>((ref) {
     routes: [
       GoRoute(path: '/sign-in', builder: (_, _) => const SignInScreen()),
       GoRoute(path: '/', builder: (_, _) => const HomeShell()),
-      GoRoute(path: '/learn', builder: (_, _) => const LearnScreen(standalone: true)),
-      GoRoute(path: '/checklist/:runId', builder: (_, s) => ChecklistFillScreen(runId: p(s, 'runId'))),
-      GoRoute(path: '/run/:runId', builder: (_, s) => RunDetailScreen(runId: p(s, 'runId'))),
-      GoRoute(path: '/module/:id', builder: (_, s) => ModuleScreen(assignmentId: p(s, 'id'))),
-      GoRoute(path: '/module/:id/quiz', builder: (_, s) => QuizScreen(assignmentId: p(s, 'id'))),
-      GoRoute(path: '/module/:id/practical', builder: (_, s) => PracticalRecordScreen(assignmentId: p(s, 'id'))),
-      GoRoute(path: '/issues/new', builder: (_, _) => const RaiseIssueScreen()),
-      GoRoute(path: '/issues/:id', builder: (_, s) => IssueDetailScreen(issueId: p(s, 'id'))),
-      GoRoute(path: '/mentor/trainee/:id', builder: (_, s) => TraineeDetailScreen(mentorshipId: p(s, 'id'))),
-      GoRoute(path: '/mentor/score/:id', builder: (_, s) => PracticalScoreScreen(submissionId: p(s, 'id'))),
-      GoRoute(path: '/mentor/checkin/:id', builder: (_, s) => CheckinScreen(mentorshipId: p(s, 'id'))),
-      GoRoute(path: '/my-mentor/:id', builder: (_, s) => MyMentorScreen(mentorshipId: p(s, 'id'))),
-      GoRoute(path: '/rate-mentor/:id', builder: (_, s) => RateMentorScreen(mentorshipId: p(s, 'id'))),
-      GoRoute(path: '/team/signoffs', builder: (_, _) => const SignoffsScreen()),
-      GoRoute(path: '/team/:userId', builder: (_, s) => StaffDetailScreen(userId: p(s, 'userId'))),
-      GoRoute(path: '/outlet/:id', builder: (_, s) => ManagerTodayScreen(outletId: p(s, 'id'))),
-      GoRoute(path: '/notifications', builder: (_, _) => const NotificationsScreen()),
-      GoRoute(path: '/certificates', builder: (_, _) => const CertificatesScreen()),
+      route('/learn', (_) => const LearnScreen(standalone: true)),
+      route('/checklist/:runId', (s) => ChecklistFillScreen(runId: p(s, 'runId'))),
+      route('/run/:runId', (s) => RunDetailScreen(runId: p(s, 'runId'))),
+      route('/module/:id', (s) => ModuleScreen(assignmentId: p(s, 'id'))),
+      route('/module/:id/quiz', (s) => QuizScreen(assignmentId: p(s, 'id'))),
+      route('/module/:id/practical', (s) => PracticalRecordScreen(assignmentId: p(s, 'id'))),
+      route('/issues/new', (_) => const RaiseIssueScreen()),
+      route('/issues/:id', (s) => IssueDetailScreen(issueId: p(s, 'id'))),
+      route('/mentor/trainee/:id', (s) => TraineeDetailScreen(mentorshipId: p(s, 'id'))),
+      route('/mentor/score/:id', (s) => PracticalScoreScreen(submissionId: p(s, 'id'))),
+      route('/mentor/checkin/:id', (s) => CheckinScreen(mentorshipId: p(s, 'id'))),
+      route('/my-mentor/:id', (s) => MyMentorScreen(mentorshipId: p(s, 'id'))),
+      route('/rate-mentor/:id', (s) => RateMentorScreen(mentorshipId: p(s, 'id'))),
+      route('/team/signoffs', (_) => const SignoffsScreen()),
+      route('/team/:userId', (s) => StaffDetailScreen(userId: p(s, 'userId'))),
+      route('/outlet/:id', (s) => ManagerTodayScreen(outletId: p(s, 'id'))),
+      route('/notifications', (_) => const NotificationsScreen()),
+      route('/certificates', (_) => const CertificatesScreen()),
     ],
   );
 });

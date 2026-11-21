@@ -354,6 +354,8 @@ class _IssueActionsState extends ConsumerState<_IssueActions> {
     final canFix = i.isOpen && ((i.assignedTo == me && s.can('issue.fix', outletId: i.outletId)) || canAssign);
     final canVerify = i.isFixed && s.can('issue.verify', outletId: i.outletId) && i.fixedBy != me;
     final canRefresher = i.source != 'manual' && i.raisedBy != null && s.can('training.assign', outletId: i.outletId);
+    // Mirrors the "comment on issues" policy.
+    final canComment = !i.isClosed && (s.can('issue.view', outletId: i.outletId) || i.assignedTo == me);
 
     final buttons = <Widget>[];
     if (canVerify) {
@@ -383,7 +385,7 @@ class _IssueActionsState extends ConsumerState<_IssueActions> {
     }
 
     final secondary = <Widget>[
-      if (!i.isClosed) TextButton.icon(onPressed: _busy ? null : _comment, icon: const Icon(Icons.chat_bubble_outline, size: 18), label: Text(l10n.comment)),
+      if (canComment) TextButton.icon(onPressed: _busy ? null : _comment, icon: const Icon(Icons.chat_bubble_outline, size: 18), label: Text(l10n.comment)),
       if (canRefresher) TextButton.icon(onPressed: _busy ? null : _refresher, icon: const Icon(Icons.school_outlined, size: 18), label: Text(l10n.refresher)),
     ];
     if (buttons.isEmpty && secondary.isEmpty) return const SizedBox.shrink();
