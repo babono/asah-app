@@ -9,7 +9,7 @@ import 'package:uuid/uuid.dart';
 import '../config/app_config.dart';
 import '../supabase/supabase_providers.dart';
 
-/// Signed playback URLs for a Cloudflare Stream video.
+/// Signed playback URLs for a video (Cloudflare Stream, or an MP4 in Storage).
 class StreamPlayback {
   StreamPlayback({required this.hlsUrl, this.mp4Url, this.thumbnailUrl, this.status, this.downloadStatus});
   final String hlsUrl;
@@ -77,8 +77,17 @@ class MediaRepository {
 
   /// Uploads a video to Cloudflare Stream through a one-time direct upload URL.
   /// The app uploads practical_video (trainee); training videos come from the admin web.
+  ///
+  /// Until Cloudflare Stream is set up on the backend, the video goes to
+  /// Supabase Storage instead (max 50 MB); stream-playback serves both.
   Future<String> uploadVideo(XFile video, {required String kind, void Function(double)? onProgress}) async {
-    final res = await _db.functions.invoke('stream-upload', body: {'kind': kind});
+    final FunctionResponse res;
+    try {
+      res = await _db.functions.invoke('stream-upload', body: {'kind': kind});
+    } on FunctionException catch (e) {
+      if ('${e.details}'.contains('not configured')) return _uploadVideoToStorage(video, kind: kind, onProgress: onProgress);
+      rethrow;
+    }
     final data = res.data as Map<String, dynamic>;
     final uploadUrl = data['upload_url'] as String;
 
@@ -93,6 +102,37 @@ class MediaRepository {
     }
     onProgress?.call(1);
     return data['media_file_id'] as String;
+  }
+
+  Future<String> _uploadVideoToStorage(XFile video, {required String kind, void Function(double)? onProgress}) async {
+    final me = await _db.from('profiles').select('outlet_id').eq('id', _uid).single();
+    final outletId = me['outlet_id'] as String;
+    final bytes = await video.readAsBytes();
+    final mov = video.path.toLowerCase().endsWith('.mov');
+    final key = 'personal/$outletId/$_uid/${_uuid.v4()}.${mov ? 'mov' : 'mp4'}';
+    final mime = mov ? 'video/quicktime' : 'video/mp4';
+    onProgress?.call(0.1);
+    await _db.storage.from(AppConfig.mediaBucket).uploadBinary(
+          key,
+          bytes,
+          fileOptions: FileOptions(contentType: mime, upsert: false),
+        );
+    final row = await _db
+        .from('media_files')
+        .insert({
+          'bucket': AppConfig.mediaBucket,
+          'object_key': key,
+          'kind': kind,
+          'mime_type': mime,
+          'size_bytes': bytes.length,
+          'status': 'ready',
+          'uploaded_by': _uid,
+          'outlet_id': outletId,
+        })
+        .select('id')
+        .single();
+    onProgress?.call(1);
+    return row['id'] as String;
   }
 
   Future<StreamPlayback> playback(String mediaId, {bool download = false}) async {

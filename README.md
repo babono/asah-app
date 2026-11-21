@@ -76,6 +76,14 @@ flutter run --dart-define-from-file=config/development.json
 flutter test
 ```
 
+**iOS with Xcode 27 and Flutter 3.44**: run on a specific simulator or device (`flutter run -d <id>`,
+see `flutter devices`). `flutter build ios --simulator` fails with "does not contain architectures
+arm64 x86_64" because Xcode 27's `lipo -verify_arch` takes one architecture at a time; a single
+device builds one architecture and is not affected. On an iPhone, turn on Settings › Privacy &
+Security › Developer Mode and connect it by cable the first time.
+
+The demo accounts (phone numbers with a fixed code) are listed in asah-be's README › Demo.
+
 Push needs a OneSignal app (FCM for Android, APNs for iOS); leave `ONESIGNAL_APP_ID` empty to run
 without it. The app links the device to the Supabase user id as the OneSignal External ID.
 
