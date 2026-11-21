@@ -7,14 +7,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/utils/format.dart';
 import '../../core/widgets/widgets.dart';
 import '../checklists/checklist_repository.dart';
-import '../checklists/models.dart';
 import '../session/session_provider.dart';
-
-final myAuditsProvider = FutureProvider<List<ChecklistRun>>((ref) async {
-  final s = await ref.watch(sessionProvider.future);
-  if (s == null) return [];
-  return ref.watch(checklistRepositoryProvider).myAudits(s.profile.id);
-});
 
 /// Area manager visit audits: start one at an outlet, see past ones (S4).
 class AuditsScreen extends ConsumerWidget {
@@ -86,6 +79,7 @@ class AuditsScreen extends ConsumerWidget {
     final audits = ref.watch(myAuditsProvider);
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'start-audit', // tabs share one screen: tags must differ
         onPressed: () => _start(context, ref),
         icon: const Icon(Icons.add),
         label: Text(l10n.startAudit),

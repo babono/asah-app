@@ -40,7 +40,12 @@ List<HomeTab> tabsFor(Session s) {
 /// Selected tab; other screens can switch it (e.g. "All issues").
 class HomeTabController extends Notifier<HomeTab?> {
   @override
-  HomeTab? build() => null;
+  HomeTab? build() {
+    // Each person starts on their first tab, also on a shared phone.
+    ref.watch(currentUserIdProvider);
+    return null;
+  }
+
   void select(HomeTab tab) => state = tab;
 }
 

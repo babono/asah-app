@@ -11,6 +11,7 @@ import '../../core/utils/errors.dart';
 import '../checklists/checklist_repository.dart';
 import '../checklists/draft_store.dart';
 import '../checklists/models.dart';
+import '../issues/issue_repository.dart';
 import '../learning/learning_repository.dart';
 
 /// Work saved on the phone and sent when there is a connection (PRD F7).
@@ -202,7 +203,12 @@ class SyncController extends Notifier<SyncState> {
         File(path).deleteSync();
       } catch (_) {}
     }
+    // Everything that shows this run, or the issues it raised.
     ref.invalidate(runProvider(runId));
+    ref.invalidate(myRunsTodayProvider);
+    ref.invalidate(myAuditsProvider);
+    ref.invalidate(outletRunsTodayProvider);
+    if (result.failed > 0) ref.invalidate(issuesProvider);
     return {'failed': result.failed, 'total': result.total};
   }
 }

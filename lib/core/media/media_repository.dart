@@ -150,7 +150,7 @@ class MediaRepository {
   }
 }
 
-final mediaRepositoryProvider = Provider<MediaRepository>((ref) => MediaRepository(ref.watch(supabaseProvider)));
+final mediaRepositoryProvider = Provider<MediaRepository>((ref) => MediaRepository(userDb(ref)));
 
 final signedUrlProvider = FutureProvider.family<String, String>((ref, mediaId) {
   return ref.watch(mediaRepositoryProvider).signedUrl(mediaId);

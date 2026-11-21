@@ -128,7 +128,7 @@ class DashboardRepository {
   }
 }
 
-final dashboardRepositoryProvider = Provider((ref) => DashboardRepository(ref.watch(supabaseProvider)));
+final dashboardRepositoryProvider = Provider((ref) => DashboardRepository(userDb(ref)));
 
 final dashboardProvider = FutureProvider.family<DashboardData, ({String key, int days})>((ref, args) {
   final ids = args.key.split(',').where((s) => s.isNotEmpty).toList();

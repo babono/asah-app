@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pinput/pinput.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../core/config/app_config.dart';
@@ -101,6 +100,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final lang = ref.watch(localeProvider)?.languageCode ?? Localizations.localeOf(context).languageCode;
+    final keyboardUp = MediaQuery.viewInsetsOf(context).bottom > 0;
 
     return Scaffold(
       backgroundColor: AppColors.primary,
@@ -119,19 +119,27 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(28, 48, 28, 36),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const AsahWordmark(),
-                  const SizedBox(height: 20),
-                  Text(l10n.signInHeadline,
-                      style: const TextStyle(fontSize: 26, height: 1.25, fontWeight: FontWeight.w700, color: Colors.white)),
-                  const SizedBox(height: 12),
-                  const Text(AppConfig.clientName, style: TextStyle(fontSize: 15, color: AppColors.onPrimaryMuted)),
-                ],
-              ),
+            // With the keyboard up there is no room for the headline: keep the form and button visible.
+            AnimatedSize(
+              duration: const Duration(milliseconds: 200),
+              child: keyboardUp
+                  ? const SizedBox(width: double.infinity, height: 16)
+                  : Padding(
+                      padding: const EdgeInsets.fromLTRB(28, 48, 28, 36),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const AsahWordmark(),
+                          const SizedBox(height: 20),
+                          Text(l10n.signInHeadline,
+                              style: const TextStyle(
+                                  fontSize: 26, height: 1.25, fontWeight: FontWeight.w700, color: Colors.white)),
+                          const SizedBox(height: 12),
+                          const Text(AppConfig.clientName,
+                              style: TextStyle(fontSize: 15, color: AppColors.onPrimaryMuted)),
+                        ],
+                      ),
+                    ),
             ),
             Expanded(
               child: Container(
@@ -139,8 +147,16 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                   color: Colors.white,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
                 ),
-                padding: EdgeInsets.fromLTRB(24, 32, 24, 24 + MediaQuery.of(context).padding.bottom),
-                child: _codeStep ? _codeForm(context) : _phoneForm(context),
+                padding: EdgeInsets.fromLTRB(24, keyboardUp ? 24 : 32, 24, keyboardUp ? 16 : 24 + MediaQuery.of(context).padding.bottom),
+                // Scrolls when the keyboard leaves less room than the form needs.
+                child: LayoutBuilder(
+                  builder: (context, c) => SingleChildScrollView(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(minHeight: c.maxHeight),
+                      child: IntrinsicHeight(child: _codeStep ? _codeForm(context) : _phoneForm(context)),
+                    ),
+                  ),
+                ),
               ),
             ),
           ],
@@ -197,14 +213,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
 
   Widget _codeForm(BuildContext context) {
     final l10n = context.l10n;
-    final box = PinTheme(
-      height: 56,
-      textStyle: const TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
-      decoration: BoxDecoration(
-        border: Border.all(color: AppColors.inputBorder, width: 1.5),
-        borderRadius: BorderRadius.circular(12),
-      ),
-    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -223,15 +231,18 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
         const SizedBox(height: 6),
         Text(l10n.sentTo(_e164), style: const TextStyle(fontSize: 14, color: AppColors.textSecondary)),
         const SizedBox(height: 20),
-        Pinput(
-          length: 6,
+        TextField(
           controller: _code,
           autofocus: true,
-          defaultPinTheme: box,
-          focusedPinTheme: box.copyWith(
-            decoration: box.decoration!.copyWith(border: Border.all(color: AppColors.primary, width: 1.5)),
-          ),
-          onCompleted: _verify,
+          keyboardType: TextInputType.number,
+          autofillHints: const [AutofillHints.oneTimeCode],
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(6)],
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w700, letterSpacing: 14),
+          decoration: const InputDecoration(hintText: '······', counterText: ''),
+          onChanged: (v) {
+            if (v.length == 6) _verify(v);
+          },
         ),
         const SizedBox(height: 16),
         _resendIn > 0

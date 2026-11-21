@@ -17,7 +17,7 @@ import '../today/manager_today_screen.dart';
 import 'team_screen.dart';
 
 final _profileProvider = FutureProvider.family<Profile, String>((ref, id) async {
-  final row = await ref.watch(supabaseProvider).from('profiles').select(Profile.select).eq('id', id).single();
+  final row = await userDb(ref).from('profiles').select(Profile.select).eq('id', id).single();
   return Profile.fromJson(row);
 });
 

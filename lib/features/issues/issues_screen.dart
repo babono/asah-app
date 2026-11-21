@@ -31,6 +31,7 @@ class _IssuesScreenState extends ConsumerState<IssuesScreen> {
     return Scaffold(
       floatingActionButton: canRaise
           ? FloatingActionButton.extended(
+              heroTag: 'raise-issue', // tabs share one screen: tags must differ
               onPressed: () => context.push('/issues/new'),
               icon: const Icon(Icons.add),
               label: Text(l10n.raiseIssue),

@@ -21,7 +21,7 @@ class LearningRepository {
           .from('module_assignments')
           .select(Assignment.select)
           .eq('user_id', userId)
-          .order('assigned_at');
+          .order('assigned_at', ascending: true);
       final list = (rows as List).map((r) => Assignment.fromJson(r as Map<String, dynamic>)).toList();
       // Keep the latest assignment per module (a retraining reopens one).
       final byModule = <String, Assignment>{};
@@ -120,7 +120,7 @@ class LearningRepository {
             .from('content_blocks')
             .select('id, sort, type, title, body, media_file_id, media_files(duration_seconds)')
             .eq('module_version_id', v)
-            .order('sort'),
+            .order('sort', ascending: true),
         _db.from('block_progress').select('block_id').eq('assignment_id', assignmentId),
         _db.from('quizzes').select('id, pass_mark_pct, max_attempts, time_limit_seconds, question_count').eq('module_version_id', v).maybeSingle(),
         _db
@@ -128,7 +128,7 @@ class LearningRepository {
             .select('id, score_pct, passed, submitted_at, started_at')
             .eq('assignment_id', assignmentId)
             .order('started_at', ascending: false),
-        _db.from('rubric_criteria').select('id, title, description, sort').eq('module_version_id', v).order('sort'),
+        _db.from('rubric_criteria').select('id, title, description, sort').eq('module_version_id', v).order('sort', ascending: true),
         _db
             .from('practical_submissions')
             .select(PracticalSubmission.select)
@@ -253,7 +253,7 @@ class LearningRepository {
         .from('module_versions')
         .select('id, module_id, title, modules!module_versions_module_id_fkey(category)')
         .eq('status', 'published')
-        .order('title');
+        .order('title', ascending: true);
     return (rows as List)
         .map((r) => (
               moduleId: r['module_id'] as String,
@@ -322,7 +322,7 @@ class LearningRepository {
 }
 
 final learningRepositoryProvider = Provider<LearningRepository>(
-  (ref) => LearningRepository(ref.watch(supabaseProvider), ref.watch(localStoreProvider)),
+  (ref) => LearningRepository(userDb(ref), ref.watch(localStoreProvider)),
 );
 
 final myAssignmentsProvider = FutureProvider<List<Assignment>>((ref) async {

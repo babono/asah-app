@@ -125,7 +125,7 @@ class IssueRepository {
     if (outletId != null) q = q.eq('outlet_id', outletId);
     final rows = filter == IssueFilter.closed
         ? await q.order('closed_at', ascending: false).limit(limit)
-        : await q.order('due_at').limit(limit);
+        : await q.order('due_at', ascending: true).limit(limit);
     return (rows as List).map((r) => Issue.fromJson(r as Map<String, dynamic>)).toList();
   }
 
@@ -136,7 +136,7 @@ class IssueRepository {
         .select(Issue.select)
         .eq('outlet_id', outletId)
         .neq('status', 'closed')
-        .order('due_at');
+        .order('due_at', ascending: true);
     return (rows as List).map((r) => Issue.fromJson(r as Map<String, dynamic>)).toList();
   }
 
@@ -147,7 +147,7 @@ class IssueRepository {
         .select(Issue.select)
         .inFilter('outlet_id', outletIds)
         .neq('status', 'closed')
-        .order('due_at');
+        .order('due_at', ascending: true);
     return (rows as List).map((r) => Issue.fromJson(r as Map<String, dynamic>)).toList();
   }
 
@@ -159,7 +159,7 @@ class IssueRepository {
         .from('issue_events')
         .select('id, actor_id, type, note, media_file_id, created_at')
         .eq('issue_id', issueId)
-        .order('created_at');
+        .order('created_at', ascending: true);
     return (rows as List).map((r) => IssueEvent.fromJson(r as Map<String, dynamic>)).toList();
   }
 
@@ -218,13 +218,13 @@ class IssueRepository {
         .select(Profile.select)
         .eq('outlet_id', outletId)
         .eq('status', 'active')
-        .order('full_name');
+        .order('full_name', ascending: true);
     return (rows as List).map((r) => Profile.fromJson(r as Map<String, dynamic>)).toList();
   }
 }
 
 final issueRepositoryProvider =
-    Provider((ref) => IssueRepository(ref.watch(supabaseProvider), ref.watch(mediaRepositoryProvider)));
+    Provider((ref) => IssueRepository(userDb(ref), ref.watch(mediaRepositoryProvider)));
 
 final issuesProvider = FutureProvider.family<List<Issue>, IssueFilter>((ref, filter) {
   return ref.watch(issueRepositoryProvider).list(filter: filter);

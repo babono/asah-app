@@ -97,7 +97,7 @@ class MentorshipRepository {
         .select(Mentorship.select)
         .eq('mentor_id', mentorId)
         .isFilter('ended_at', null)
-        .order('started_at');
+        .order('started_at', ascending: true);
     return (rows as List).map((r) => Mentorship.fromJson(r as Map<String, dynamic>)).toList();
   }
 
@@ -130,7 +130,7 @@ class MentorshipRepository {
         .select(PracticalSubmission.select)
         .inFilter('user_id', traineeIds)
         .eq('status', 'pending')
-        .order('submitted_at');
+        .order('submitted_at', ascending: true);
     return (rows as List).map((r) => PracticalSubmission.fromJson(r as Map<String, dynamic>)).toList();
   }
 
@@ -142,7 +142,7 @@ class MentorshipRepository {
         .from('rubric_criteria')
         .select('id, title, description, sort')
         .eq('module_version_id', moduleVersionId)
-        .order('sort');
+        .order('sort', ascending: true);
     return (rows as List).map((r) => RubricCriterion.fromJson(r as Map<String, dynamic>)).toList();
   }
 
@@ -260,7 +260,7 @@ class MentorshipRepository {
   }
 }
 
-final mentorshipRepositoryProvider = Provider((ref) => MentorshipRepository(ref.watch(supabaseProvider)));
+final mentorshipRepositoryProvider = Provider((ref) => MentorshipRepository(userDb(ref)));
 
 final myTraineesProvider = FutureProvider<List<Mentorship>>((ref) async {
   final s = await ref.watch(sessionProvider.future);

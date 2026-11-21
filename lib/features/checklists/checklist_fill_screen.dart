@@ -32,7 +32,11 @@ class ChecklistFillScreen extends ConsumerWidget {
       loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
       error: (e, _) => Scaffold(
         appBar: AppBar(),
-        body: AsyncBody(value: run, builder: (_) => const SizedBox(), onRetry: () => ref.invalidate(runProvider(runId))),
+        body: AsyncBody(
+          value: run,
+          builder: (_) => const SizedBox(),
+          onRetry: () => ref.invalidate(runProvider(runId)),
+        ),
       ),
       data: (r) {
         final pendingSync = ref.watch(syncProvider.select((s) => s.hasPendingSubmit(runId)));
@@ -43,9 +47,10 @@ class ChecklistFillScreen extends ConsumerWidget {
           error: (e, _) => Scaffold(
             appBar: AppBar(),
             body: AsyncBody(
-                value: items,
-                builder: (_) => const SizedBox(),
-                onRetry: () => ref.invalidate(runItemsProvider(r.templateVersionId))),
+              value: items,
+              builder: (_) => const SizedBox(),
+              onRetry: () => ref.invalidate(runItemsProvider(r.templateVersionId)),
+            ),
           ),
           data: (list) => _FillForm(run: r, items: list, pendingSync: pendingSync),
         );
@@ -137,8 +142,12 @@ class _FillFormState extends ConsumerState<_FillForm> {
       if (outlet?.latitude != null && outlet?.longitude != null) {
         final d = distanceMeters(lat, lng, outlet!.latitude!, outlet.longitude!);
         if (d > outlet.geofenceRadiusM && mounted) {
-          final go = await confirmDialog(context,
-              title: l10n.outsideOutletTitle, message: l10n.outsideOutletBody(outlet.name, d.round()), confirm: l10n.submitAnyway);
+          final go = await confirmDialog(
+            context,
+            title: l10n.outsideOutletTitle,
+            message: l10n.outsideOutletBody(outlet.name, d.round()),
+            confirm: l10n.submitAnyway,
+          );
           if (!go) return;
         }
       }
@@ -233,9 +242,11 @@ class _FillFormState extends ConsumerState<_FillForm> {
                 const Icon(Icons.location_on_outlined, size: 14, color: AppColors.textSecondary),
                 const SizedBox(width: 6),
                 Flexible(
-                  child: Text(l10n.timeLocationAdded(outletName),
-                      style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
-                      overflow: TextOverflow.ellipsis),
+                  child: Text(
+                    l10n.timeLocationAdded(outletName),
+                    style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             ),
@@ -243,7 +254,11 @@ class _FillFormState extends ConsumerState<_FillForm> {
             FilledButton(
               onPressed: _submitting || locked ? null : _submit,
               child: _submitting
-                  ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.white))
+                  ? const SizedBox(
+                      width: 22,
+                      height: 22,
+                      child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.white),
+                    )
                   : Text(_issueCount > 0 ? l10n.submitRaisesIssues(_issueCount) : l10n.submit),
             ),
           ],
@@ -269,7 +284,10 @@ class _FillFormState extends ConsumerState<_FillForm> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: Text('$number · ${item.label}', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
+                child: Text(
+                  '$number · ${item.label}',
+                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+                ),
               ),
               if (item.needsPhoto) ...[
                 const SizedBox(width: 8),
@@ -305,24 +323,26 @@ class _FillFormState extends ConsumerState<_FillForm> {
     switch (item.answerType) {
       case AnswerType.yesNo:
         return [
-          Row(children: [
-            Expanded(
-              child: ChoiceButton(
-                label: l10n.yes,
-                selected: a?.yes == true,
-                onTap: () => _update(() => _answer(item.id).yes = true),
+          Row(
+            children: [
+              Expanded(
+                child: ChoiceButton(
+                  label: l10n.yes,
+                  selected: a?.yes == true,
+                  onTap: () => _update(() => _answer(item.id).yes = true),
+                ),
               ),
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: ChoiceButton(
-                label: l10n.no,
-                negative: item.failOnNo,
-                selected: a?.yes == false,
-                onTap: () => _update(() => _answer(item.id).yes = false),
+              const SizedBox(width: 8),
+              Expanded(
+                child: ChoiceButton(
+                  label: l10n.no,
+                  negative: item.failOnNo,
+                  selected: a?.yes == false,
+                  onTap: () => _update(() => _answer(item.id).yes = false),
+                ),
               ),
-            ),
-          ]),
+            ],
+          ),
         ];
       case AnswerType.number:
         final fails = a?.fails(item) ?? false;
@@ -334,31 +354,35 @@ class _FillFormState extends ConsumerState<_FillForm> {
         } else if (item.maxValue != null) {
           range = l10n.allowedMax('${item.maxValue}', item.unit ?? '');
         }
+        final field = TextField(
+          controller: _numberControllers[item.id],
+          keyboardType: const TextInputType.numberWithOptions(decimal: true, signed: true),
+          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^-?\d*[.,]?\d*'))],
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+          decoration: InputDecoration(
+            suffixText: item.unit,
+            fillColor: fails ? AppColors.dangerSoft : AppColors.surface,
+            enabledBorder: fails
+                ? OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(color: AppColors.danger, width: 1.5),
+                  )
+                : null,
+          ),
+          onChanged: (v) => _update(() => _answer(item.id).number = num.tryParse(v.replaceAll(',', '.'))),
+        );
+        // Short field beside the allowed range; full width for open amounts such as cash.
+        if (range == null) return [field];
         return [
-          Row(children: [
-            SizedBox(
-              width: 140,
-              child: TextField(
-                controller: _numberControllers[item.id],
-                keyboardType: const TextInputType.numberWithOptions(decimal: true, signed: true),
-                inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^-?\d*[.,]?\d*'))],
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-                decoration: InputDecoration(
-                  suffixText: item.unit,
-                  fillColor: fails ? AppColors.dangerSoft : AppColors.surface,
-                  enabledBorder: fails
-                      ? OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: AppColors.danger, width: 1.5))
-                      : null,
-                ),
-                onChanged: (v) => _update(() => _answer(item.id).number = num.tryParse(v.replaceAll(',', '.'))),
+          Row(
+            children: [
+              SizedBox(width: 140, child: field),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(range, style: const TextStyle(fontSize: 13, color: AppColors.textSecondary)),
               ),
-            ),
-            const SizedBox(width: 12),
-            if (range != null)
-              Expanded(child: Text(range, style: const TextStyle(fontSize: 13, color: AppColors.textSecondary))),
-          ]),
+            ],
+          ),
         ];
       case AnswerType.text:
         return [
@@ -421,7 +445,10 @@ class _TakePhotoButton extends StatelessWidget {
                   children: [
                     const Icon(Icons.photo_camera_outlined, color: AppColors.primary, size: 22),
                     const SizedBox(width: 8),
-                    Text(label, style: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.primary)),
+                    Text(
+                      label,
+                      style: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.primary),
+                    ),
                   ],
                 )
               : Column(
@@ -429,10 +456,15 @@ class _TakePhotoButton extends StatelessWidget {
                   children: [
                     const Icon(Icons.photo_camera_outlined, color: AppColors.primary, size: 28),
                     const SizedBox(height: 6),
-                    Text(label, style: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.primary)),
+                    Text(
+                      label,
+                      style: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.primary),
+                    ),
                     const SizedBox(height: 2),
-                    Text(context.l10n.inAppCameraOnly,
-                        style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+                    Text(
+                      context.l10n.inAppCameraOnly,
+                      style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                    ),
                   ],
                 ),
         ),

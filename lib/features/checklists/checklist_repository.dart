@@ -24,7 +24,7 @@ class ChecklistRepository {
           .from('checklist_runs')
           .select(ChecklistRun.select)
           .or('shift_date.eq.$today,and(status.in.(pending,in_progress),conducted_by.eq.${session.profile.id})')
-          .order('due_at');
+          .order('due_at', ascending: true);
       var runs = (rows as List).map((r) => ChecklistRun.fromJson(r as Map<String, dynamic>)).toList();
 
       // Managers also see every outlet run (checklist.view); keep only the
@@ -65,7 +65,7 @@ class ChecklistRepository {
         .select(ChecklistRun.select)
         .eq('outlet_id', outletId)
         .eq('shift_date', Fmt.isoDate(day))
-        .order('due_at');
+        .order('due_at', ascending: true);
     return (rows as List).map((r) => ChecklistRun.fromJson(r as Map<String, dynamic>)).toList();
   }
 
@@ -99,7 +99,7 @@ class ChecklistRepository {
           .from('checklist_items')
           .select(ChecklistItem.select)
           .eq('template_version_id', templateVersionId)
-          .order('sort');
+          .order('sort', ascending: true);
       await _store.setJson(key, rows);
       return (rows as List).map((r) => ChecklistItem.fromJson(r as Map<String, dynamic>)).toList();
     } catch (e) {
@@ -139,7 +139,7 @@ class ChecklistRepository {
         .select('id, name')
         .eq('kind', 'audit')
         .isFilter('archived_at', null)
-        .order('name');
+        .order('name', ascending: true);
     return (rows as List).map((r) => (id: r['id'] as String, name: r['name'] as String)).toList();
   }
 
@@ -187,13 +187,20 @@ class ChecklistRepository {
 }
 
 final checklistRepositoryProvider = Provider<ChecklistRepository>(
-  (ref) => ChecklistRepository(ref.watch(supabaseProvider), ref.watch(localStoreProvider)),
+  (ref) => ChecklistRepository(userDb(ref), ref.watch(localStoreProvider)),
 );
 
 final myRunsTodayProvider = FutureProvider<List<ChecklistRun>>((ref) async {
   final session = await ref.watch(sessionProvider.future);
   if (session == null || !(session.canFill || session.isAreaManager)) return [];
   return ref.watch(checklistRepositoryProvider).myRunsToday(session);
+});
+
+/// Area manager visit audits (S4).
+final myAuditsProvider = FutureProvider<List<ChecklistRun>>((ref) async {
+  final s = await ref.watch(sessionProvider.future);
+  if (s == null) return [];
+  return ref.watch(checklistRepositoryProvider).myAudits(s.profile.id);
 });
 
 final templateStatsProvider = FutureProvider<Map<String, TemplateStats>>((ref) async {

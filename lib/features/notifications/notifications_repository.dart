@@ -70,7 +70,7 @@ class NotificationsRepository {
       .update({'read_at': DateTime.now().toUtc().toIso8601String()}).isFilter('read_at', null);
 }
 
-final notificationsRepositoryProvider = Provider((ref) => NotificationsRepository(ref.watch(supabaseProvider)));
+final notificationsRepositoryProvider = Provider((ref) => NotificationsRepository(userDb(ref)));
 
 final notificationsProvider = FutureProvider<List<AppNotification>>((ref) {
   ref.watch(currentUserIdProvider);
@@ -81,7 +81,7 @@ final notificationsProvider = FutureProvider<List<AppNotification>>((ref) {
 final unreadCountProvider = StreamProvider<int>((ref) {
   final userId = ref.watch(currentUserIdProvider);
   if (userId == null) return Stream.value(0);
-  final db = ref.watch(supabaseProvider);
+  final db = userDb(ref);
   return db
       .from('notifications')
       .stream(primaryKey: ['id'])

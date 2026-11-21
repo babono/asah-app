@@ -16,7 +16,7 @@ class Person {
 final peopleProvider = FutureProvider.family<Map<String, Person>, String>((ref, key) async {
   final ids = key.split(',').where((s) => s.isNotEmpty).toList();
   if (ids.isEmpty) return {};
-  final rows = await ref.watch(supabaseProvider).rpc('people_names', params: {'p_ids': ids});
+  final rows = await userDb(ref).rpc('people_names', params: {'p_ids': ids});
   return {
     for (final r in rows as List)
       r['id'] as String: Person(r['id'] as String, r['full_name'] as String, r['position_name'] as String?),
