@@ -7,7 +7,7 @@ class AppConfig {
   static const String appName = String.fromEnvironment('APP_NAME', defaultValue: 'ASAH');
   static const String clientName = 'Juta Berlian Culinary';
 
-  /// Storage bucket for photos and PDFs (see supabase/migrations/*_app_support.sql).
+  /// Storage bucket for photos and PDFs (asah-be: supabase/migrations/*_app_support.sql).
   static const String mediaBucket = 'asah-media';
 
   /// media_files.bucket value for videos hosted on Cloudflare Stream.

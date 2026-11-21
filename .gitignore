@@ -47,5 +47,3 @@ app.*.map.json
 # Local config with keys
 config/development.json
 config/production.json
-supabase/.temp/
-supabase/.branches/

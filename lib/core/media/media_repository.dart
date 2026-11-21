@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:cross_file/cross_file.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -66,35 +65,6 @@ class MediaRepository {
     return row['id'] as String;
   }
 
-  /// Admin web: SOP images and PDFs for modules.
-  Future<String> uploadTrainingFile(Uint8List bytes, {required String fileName, required String kind}) async {
-    final ext = fileName.contains('.') ? fileName.split('.').last.toLowerCase() : 'bin';
-    final mime = switch (ext) {
-      'pdf' => 'application/pdf',
-      'png' => 'image/png',
-      'webp' => 'image/webp',
-      _ => 'image/jpeg',
-    };
-    final key = 'training/${_uuid.v4()}.$ext';
-    await _db.storage
-        .from(AppConfig.mediaBucket)
-        .uploadBinary(key, bytes, fileOptions: FileOptions(contentType: mime));
-    final row = await _db
-        .from('media_files')
-        .insert({
-          'bucket': AppConfig.mediaBucket,
-          'object_key': key,
-          'kind': kind,
-          'mime_type': mime,
-          'size_bytes': bytes.length,
-          'status': 'ready',
-          'uploaded_by': _uid,
-        })
-        .select('id')
-        .single();
-    return row['id'] as String;
-  }
-
   /// Short-lived URL for a Storage-backed media file.
   Future<String> signedUrl(String mediaId) async {
     final cached = _signedUrls[mediaId];
@@ -106,7 +76,7 @@ class MediaRepository {
   }
 
   /// Uploads a video to Cloudflare Stream through a one-time direct upload URL.
-  /// [kind] is practical_video (trainee, in the app) or training_video (admin web).
+  /// The app uploads practical_video (trainee); training videos come from the admin web.
   Future<String> uploadVideo(XFile video, {required String kind, void Function(double)? onProgress}) async {
     final res = await _db.functions.invoke('stream-upload', body: {'kind': kind});
     final data = res.data as Map<String, dynamic>;
