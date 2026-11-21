@@ -84,6 +84,31 @@ Security › Developer Mode and connect it by cable the first time.
 
 The demo accounts (phone numbers with a fixed code) are listed in asah-be's README › Demo.
 
+### Demo videos
+
+`integration_test/demo_test.dart` walks through the app as each role, with captions, and
+`tool/record_demo.py` records one video per use case from the iOS simulator into `build/demo/`:
+
+| Scene | Who | What |
+| --- | --- | --- |
+| 01 | Putu, new server | Sign in (EN/ID), Today, notifications |
+| 02 | Putu | Training video, SOP card, quiz, certificate |
+| 03 | Putu | Closing checklist with photos; a "No" raises an issue |
+| 04 | Putu | Raise an issue with a photo |
+| 05 | Komang, mentor | Trainee progress, weekly check-in, fix an issue with proof |
+| 06 | Made Ayu, outlet manager | Outlet Today, accept a fix, assign an issue, team |
+| 07 | Budi, area manager | Area overview, outlet drill-down, audit visit with findings |
+
+```bash
+(cd ../asah-be && npm run demo:reset)   # the scenes change data and build on each other
+python3 tool/record_demo.py              # or --scene 03 for one
+```
+
+Needs `DEMO_OTP` (the test numbers' code) in `config/development.json`. The simulator has no
+camera, so photos in the videos are generated placeholders labelled "Simulated camera photo".
+The same test runs without recording: `flutter test integration_test/demo_test.dart -d <simulator>
+--dart-define-from-file=config/development.json`.
+
 Push needs a OneSignal app (FCM for Android, APNs for iOS); leave `ONESIGNAL_APP_ID` empty to run
 without it. The app links the device to the Supabase user id as the OneSignal External ID.
 

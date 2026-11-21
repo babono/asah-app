@@ -23,7 +23,6 @@ dependencies:
   intl: ^0.20.2
   onesignal_flutter: ^5.8.0
   path_provider: ^2.1.6
-  pinput: ^7.0.0
   shared_preferences: ^2.5.6
   supabase_flutter: ^2.18.3
   url_launcher: ^6.3.3
@@ -31,6 +30,8 @@ dependencies:
   video_player: ^2.14.1
 dev_dependencies:
   flutter_test:
+    sdk: flutter
+  integration_test:
     sdk: flutter
   flutter_lints: ^6.0.0
 

@@ -14,6 +14,11 @@ import 'router.dart';
 class AsahApp extends ConsumerStatefulWidget {
   const AsahApp({super.key});
 
+  /// Wraps every screen, above dialogs and sheets. Integration tests use it to
+  /// add captions to demo recordings; the app never sets it.
+  @visibleForTesting
+  static Widget Function(Widget app)? debugWrapper;
+
   @override
   ConsumerState<AsahApp> createState() => _AsahAppState();
 }
@@ -41,7 +46,8 @@ class _AsahAppState extends ConsumerState<AsahApp> {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       builder: (context, child) {
         Intl.defaultLocale = Localizations.localeOf(context).languageCode;
-        return child ?? const SizedBox.shrink();
+        final app = child ?? const SizedBox.shrink();
+        return AsahApp.debugWrapper?.call(app) ?? app;
       },
     );
   }
