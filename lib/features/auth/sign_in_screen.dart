@@ -101,6 +101,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     final l10n = context.l10n;
     final lang = ref.watch(localeProvider)?.languageCode ?? Localizations.localeOf(context).languageCode;
     final keyboardUp = MediaQuery.viewInsetsOf(context).bottom > 0;
+    // Small phones (iPhone SE, compact Androids) get a tighter headline block.
+    final short = MediaQuery.sizeOf(context).height < 720;
 
     return Scaffold(
       backgroundColor: AppColors.primary,
@@ -113,50 +115,52 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
               child: Align(
                 alignment: Alignment.centerRight,
-                child: _LanguageToggle(
-                  value: lang,
-                  onChanged: (v) => ref.read(localeProvider.notifier).set(v),
-                ),
+                child: _LanguageToggle(value: lang, onChanged: (v) => ref.read(localeProvider.notifier).set(v)),
               ),
             ),
             // With the keyboard up there is no room for the headline: keep the form and button visible.
-            AnimatedSize(
-              duration: const Duration(milliseconds: 200),
-              child: keyboardUp
-                  ? const SizedBox(width: double.infinity, height: 16)
-                  : Padding(
-                      padding: const EdgeInsets.fromLTRB(28, 48, 28, 36),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const AsahWordmark(),
-                          const SizedBox(height: 20),
-                          Text(l10n.signInHeadline,
-                              style: const TextStyle(
-                                  fontSize: 26, height: 1.25, fontWeight: FontWeight.w700, color: Colors.white)),
+            // Collapse at once: animating it would overflow while the keyboard is already taking the space.
+            keyboardUp
+                ? const SizedBox(width: double.infinity, height: 16)
+                : Padding(
+                    padding: EdgeInsets.fromLTRB(28, short ? 20 : 48, 28, short ? 24 : 36),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const AsahWordmark(),
+                        SizedBox(height: short ? 14 : 20),
+                        Text(
+                          l10n.signInHeadline,
+                          style: TextStyle(
+                            fontSize: short ? 22 : 26,
+                            height: 1.25,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
+                        ),
+                        if (!short) ...[
                           const SizedBox(height: 12),
-                          const Text(AppConfig.clientName,
-                              style: TextStyle(fontSize: 15, color: AppColors.onPrimaryMuted)),
+                          const Text(
+                            AppConfig.clientName,
+                            style: TextStyle(fontSize: 15, color: AppColors.onPrimaryMuted),
+                          ),
                         ],
-                      ),
+                      ],
                     ),
-            ),
+                  ),
             Expanded(
               child: Container(
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
                 ),
-                padding: EdgeInsets.fromLTRB(24, keyboardUp ? 24 : 32, 24, keyboardUp ? 16 : 24 + MediaQuery.of(context).padding.bottom),
-                // Scrolls when the keyboard leaves less room than the form needs.
-                child: LayoutBuilder(
-                  builder: (context, c) => SingleChildScrollView(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(minHeight: c.maxHeight),
-                      child: IntrinsicHeight(child: _codeStep ? _codeForm(context) : _phoneForm(context)),
-                    ),
-                  ),
+                padding: EdgeInsets.fromLTRB(
+                  24,
+                  keyboardUp || short ? 24 : 32,
+                  24,
+                  keyboardUp ? 12 : 24 + MediaQuery.paddingOf(context).bottom,
                 ),
+                child: _codeStep ? _codeForm(context) : _phoneForm(context, keyboardUp),
               ),
             ),
           ],
@@ -165,16 +169,49 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     );
   }
 
-  Widget _phoneForm(BuildContext context) {
-    final l10n = context.l10n;
+  /// Keyboard down: the button sits at the bottom of the panel; on a short
+  /// phone the panel scrolls instead of overflowing.
+  /// Keyboard up: the button is pinned just above the keyboard and only the
+  /// fields scroll. The fields keep the same place in the tree either way, so
+  /// the focused text field (and the keyboard) survive the switch.
+  Widget _panel({required List<Widget> fields, required List<Widget> actions}) {
+    final keyboardUp = MediaQuery.viewInsetsOf(context).bottom > 0;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        Expanded(
+          child: CustomScrollView(
+            slivers: [
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    ...fields,
+                    if (!keyboardUp) ...[const Spacer(), const SizedBox(height: 12), ...actions],
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        if (keyboardUp) ...[const SizedBox(height: 12), ...actions],
+      ],
+    );
+  }
+
+  Widget _phoneForm(BuildContext context, bool keyboardUp) {
+    final l10n = context.l10n;
+    return _panel(
+      fields: [
         Text(l10n.signIn, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w700)),
         const SizedBox(height: 6),
         Text(l10n.signInSub, style: const TextStyle(fontSize: 14, height: 1.5, color: AppColors.textSecondary)),
         const SizedBox(height: 20),
-        Text(l10n.phoneNumber, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.textStrong)),
+        Text(
+          l10n.phoneNumber,
+          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.textStrong),
+        ),
         const SizedBox(height: 8),
         TextField(
           controller: _phone,
@@ -186,36 +223,41 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             hintText: '812 3456 7890',
             prefixIcon: Container(
               margin: const EdgeInsets.only(right: 12),
-              padding: const EdgeInsets.symmetric(horizontal: 14),
+              width: 64,
               decoration: const BoxDecoration(
                 color: AppColors.background,
                 border: Border(right: BorderSide(color: AppColors.border)),
                 borderRadius: BorderRadius.horizontal(left: Radius.circular(12)),
               ),
               alignment: Alignment.center,
-              width: 64,
-              child: const Text(AppConfig.defaultDialCode,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.textStrong)),
+              child: const Text(
+                AppConfig.defaultDialCode,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.textStrong),
+              ),
             ),
           ),
           onSubmitted: (_) => _sendCode(),
         ),
-        const Spacer(),
-        FilledButton(
-          onPressed: _busy ? null : _sendCode,
-          child: _busy ? const _Spinner() : Text(l10n.sendCode),
-        ),
-        const SizedBox(height: 12),
-        Text(l10n.noAccount, textAlign: TextAlign.center, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+      ],
+      actions: [
+        FilledButton(onPressed: _busy ? null : _sendCode, child: _busy ? const _Spinner() : Text(l10n.sendCode)),
+        // The hint is not needed while typing; it would only push the button under the keyboard.
+        if (!keyboardUp) ...[
+          const SizedBox(height: 12),
+          Text(
+            l10n.noAccount,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
+          ),
+        ],
       ],
     );
   }
 
   Widget _codeForm(BuildContext context) {
     final l10n = context.l10n;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
+    return _panel(
+      fields: [
         Align(
           alignment: Alignment.centerLeft,
           child: TextButton.icon(
@@ -251,7 +293,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 alignment: Alignment.centerLeft,
                 child: TextButton(onPressed: _busy ? null : _sendCode, child: Text(l10n.resendCode)),
               ),
-        const Spacer(),
+      ],
+      actions: [
         FilledButton(
           onPressed: _busy ? null : () => _verify(),
           child: _busy ? const _Spinner() : Text(l10n.verifyAndContinue),
@@ -287,9 +330,14 @@ class _LanguageToggle extends StatelessWidget {
             constraints: const BoxConstraints(minHeight: 32, minWidth: 44),
             padding: const EdgeInsets.symmetric(horizontal: 14),
             alignment: Alignment.center,
-            decoration: BoxDecoration(color: on ? Colors.white : Colors.transparent, borderRadius: BorderRadius.circular(999)),
-            child: Text(label,
-                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: on ? AppColors.primary : Colors.white)),
+            decoration: BoxDecoration(
+              color: on ? Colors.white : Colors.transparent,
+              borderRadius: BorderRadius.circular(999),
+            ),
+            child: Text(
+              label,
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: on ? AppColors.primary : Colors.white),
+            ),
           ),
         ),
       );
