@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:video_player/video_player.dart';
 
@@ -31,8 +32,11 @@ class MediaImage extends ConsumerWidget {
           fit: StackFit.expand,
           children: [
             url.when(
-              data: (u) => Image.network(u, fit: BoxFit.cover,
-                  errorBuilder: (_, _, _) => const Icon(Icons.broken_image_outlined, color: AppColors.textSecondary)),
+              data: (u) => Image.network(
+                u,
+                fit: BoxFit.cover,
+                errorBuilder: (_, _, _) => const Icon(Icons.broken_image_outlined, color: AppColors.textSecondary),
+              ),
               loading: () => const Center(child: CircularProgressIndicator()),
               error: (_, _) => const Icon(Icons.photo_camera_outlined, size: 36, color: AppColors.textSecondary),
             ),
@@ -89,7 +93,10 @@ class _Caption extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.6), borderRadius: BorderRadius.circular(6)),
-      child: Text(text, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Colors.white)),
+      child: Text(
+        text,
+        style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Colors.white),
+      ),
     );
   }
 }
@@ -130,10 +137,13 @@ class _StreamVideoState extends ConsumerState<StreamVideo> {
         c = VideoPlayerController.networkUrl(Uri.parse(playback.hlsUrl));
       }
       await c.initialize();
-      c.addListener(_onTick);
-      await c.play();
-      if (!mounted) return c.dispose();
+      if (!mounted) {
+        await c.dispose();
+        return;
+      }
+      c.addListener(_reportFinished);
       setState(() => _controller = c);
+      await c.play();
     } catch (e) {
       if (mounted) setState(() => _error = friendlyError(e));
     } finally {
@@ -141,20 +151,32 @@ class _StreamVideoState extends ConsumerState<StreamVideo> {
     }
   }
 
-  void _onTick() {
-    final c = _controller;
-    if (c == null || _finishedReported) return;
-    final v = c.value;
+  /// Reports once that the video was watched to the end. The controls redraw
+  /// themselves from the controller, so this listener does not rebuild.
+  void _reportFinished() {
+    final v = _controller?.value;
+    if (v == null || _finishedReported) return;
     if (v.duration > Duration.zero && v.position >= v.duration - const Duration(milliseconds: 800)) {
       _finishedReported = true;
       widget.onFinished?.call();
     }
-    if (mounted) setState(() {});
+  }
+
+  Future<void> _openFullScreen() async {
+    final c = _controller;
+    if (c == null) return;
+    await Navigator.of(context, rootNavigator: true).push(
+      PageRouteBuilder<void>(
+        opaque: true,
+        pageBuilder: (_, _, _) => _FullScreenVideo(controller: c),
+        transitionsBuilder: (_, animation, _, child) => FadeTransition(opacity: animation, child: child),
+      ),
+    );
   }
 
   @override
   void dispose() {
-    _controller?.removeListener(_onTick);
+    _controller?.removeListener(_reportFinished);
     _controller?.dispose();
     super.dispose();
   }
@@ -167,53 +189,159 @@ class _StreamVideoState extends ConsumerState<StreamVideo> {
       child: Container(
         height: widget.height,
         color: AppColors.videoBackground,
-        child: Stack(
+        child: c != null
+            ? _VideoView(controller: c, onToggleFullScreen: _openFullScreen)
+            : Stack(
+                alignment: Alignment.center,
+                children: [
+                  _loading
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : _PlayButton(onTap: _start, label: context.l10n.playVideo),
+                  if (_error != null)
+                    Positioned(
+                      left: 12,
+                      right: 12,
+                      top: 12,
+                      child: Text(
+                        _error!,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  if (widget.caption != null) Positioned(left: 12, bottom: 12, child: _Caption(widget.caption!)),
+                ],
+              ),
+      ),
+    );
+  }
+}
+
+/// The video with its controls, used inline and in full screen. It listens to
+/// the controller itself, so play/pause and the time are always current.
+class _VideoView extends StatelessWidget {
+  const _VideoView({required this.controller, required this.onToggleFullScreen, this.fullScreen = false});
+  final VideoPlayerController controller;
+  final VoidCallback onToggleFullScreen;
+  final bool fullScreen;
+
+  bool _atEnd(VideoPlayerValue v) => v.duration > Duration.zero && v.position >= v.duration;
+
+  Future<void> _togglePlay() async {
+    final v = controller.value;
+    if (v.isPlaying) return controller.pause();
+    // Finished: start again from the beginning.
+    if (_atEnd(v)) await controller.seekTo(Duration.zero);
+    await controller.play();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return ValueListenableBuilder<VideoPlayerValue>(
+      valueListenable: controller,
+      builder: (context, v, _) {
+        final playing = v.isPlaying && !_atEnd(v);
+        return Stack(
           alignment: Alignment.center,
           children: [
-            if (c != null && c.value.isInitialized)
-              Center(child: AspectRatio(aspectRatio: c.value.aspectRatio, child: VideoPlayer(c))),
-            if (c == null)
-              _loading
-                  ? const CircularProgressIndicator(color: Colors.white)
-                  : _PlayButton(onTap: _start, label: context.l10n.playVideo),
-            if (c != null)
-              Positioned.fill(
-                child: GestureDetector(
-                  onTap: () => c.value.isPlaying ? c.pause() : c.play(),
+            if (v.isInitialized)
+              Center(
+                child: AspectRatio(aspectRatio: v.aspectRatio, child: VideoPlayer(controller)),
+              ),
+            Positioned.fill(
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: _togglePlay,
+                child: IgnorePointer(
+                  ignoring: playing,
                   child: AnimatedOpacity(
-                    opacity: c.value.isPlaying ? 0 : 1,
+                    opacity: playing ? 0 : 1,
                     duration: const Duration(milliseconds: 200),
-                    child: Center(child: _PlayButton(onTap: c.play, label: context.l10n.playVideo)),
+                    child: Center(
+                      child: v.isBuffering && v.isPlaying
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : _PlayButton(onTap: _togglePlay, label: l10n.playVideo),
+                    ),
                   ),
                 ),
               ),
-            if (_error != null)
-              Positioned(
-                left: 12,
-                right: 12,
-                top: 12,
-                child: Text(_error!, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white)),
+            ),
+            if (playing)
+              // Tapping a playing video pauses it; tell screen readers.
+              Positioned.fill(
+                child: Semantics(button: true, label: l10n.pauseVideo, onTap: _togglePlay),
               ),
-            if (widget.caption != null || c != null)
-              Positioned(
-                left: 12,
-                bottom: 12,
-                child: _Caption(c != null
-                    ? '${Fmt.duration(c.value.position.inSeconds)} / ${Fmt.duration(c.value.duration.inSeconds)}'
-                    : widget.caption!),
+            Positioned(
+              left: 12,
+              bottom: fullScreen ? 24 : 12,
+              child: _Caption('${Fmt.duration(v.position.inSeconds)} / ${Fmt.duration(v.duration.inSeconds)}'),
+            ),
+            Positioned(
+              right: 4,
+              bottom: fullScreen ? 12 : 0,
+              child: IconButton(
+                onPressed: onToggleFullScreen,
+                tooltip: fullScreen ? l10n.exitFullScreen : l10n.fullScreen,
+                icon: Icon(fullScreen ? Icons.fullscreen_exit_rounded : Icons.fullscreen_rounded, color: Colors.white),
+                style: IconButton.styleFrom(backgroundColor: Colors.black45),
               ),
-            if (c != null)
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: VideoProgressIndicator(
-                  c,
-                  allowScrubbing: true,
-                  colors: const VideoProgressColors(playedColor: AppColors.accent, bufferedColor: Colors.white30),
-                ),
+            ),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: fullScreen ? 8 : 0,
+              child: VideoProgressIndicator(
+                controller,
+                allowScrubbing: true,
+                padding: EdgeInsets.only(top: fullScreen ? 12 : 4),
+                colors: const VideoProgressColors(playedColor: AppColors.accent, bufferedColor: Colors.white30),
               ),
+            ),
           ],
+        );
+      },
+    );
+  }
+}
+
+/// Full-screen player sharing the inline controller, so playback carries on
+/// where it was. Landscape videos turn the screen sideways; the app goes back
+/// to portrait on exit.
+class _FullScreenVideo extends StatefulWidget {
+  const _FullScreenVideo({required this.controller});
+  final VideoPlayerController controller;
+
+  @override
+  State<_FullScreenVideo> createState() => _FullScreenVideoState();
+}
+
+class _FullScreenVideoState extends State<_FullScreenVideo> {
+  @override
+  void initState() {
+    super.initState();
+    final landscape = widget.controller.value.aspectRatio > 1;
+    SystemChrome.setPreferredOrientations(
+      landscape ? [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight] : [DeviceOrientation.portraitUp],
+    );
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: SafeArea(
+        child: _VideoView(
+          controller: widget.controller,
+          fullScreen: true,
+          onToggleFullScreen: () => Navigator.of(context).pop(),
         ),
       ),
     );
