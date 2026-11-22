@@ -147,6 +147,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get playVideo => 'Play video';
 
   @override
+  String get pauseVideo => 'Pause video';
+
+  @override
+  String get fullScreen => 'Full screen';
+
+  @override
+  String get exitFullScreen => 'Exit full screen';
+
+  @override
   String get videoProcessing =>
       'The video is still processing. Try again in a minute.';
 

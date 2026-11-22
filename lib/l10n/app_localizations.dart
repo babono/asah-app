@@ -374,6 +374,24 @@ abstract class AppLocalizations {
   /// **'Play video'**
   String get playVideo;
 
+  /// No description provided for @pauseVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause video'**
+  String get pauseVideo;
+
+  /// No description provided for @fullScreen.
+  ///
+  /// In en, this message translates to:
+  /// **'Full screen'**
+  String get fullScreen;
+
+  /// No description provided for @exitFullScreen.
+  ///
+  /// In en, this message translates to:
+  /// **'Exit full screen'**
+  String get exitFullScreen;
+
   /// No description provided for @videoProcessing.
   ///
   /// In en, this message translates to:

@@ -147,6 +147,15 @@ class AppLocalizationsId extends AppLocalizations {
   String get playVideo => 'Putar video';
 
   @override
+  String get pauseVideo => 'Jeda video';
+
+  @override
+  String get fullScreen => 'Layar penuh';
+
+  @override
+  String get exitFullScreen => 'Keluar layar penuh';
+
+  @override
   String get videoProcessing =>
       'Video masih diproses. Coba lagi sebentar lagi.';
 
