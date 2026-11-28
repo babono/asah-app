@@ -9,6 +9,7 @@ import '../../core/widgets/widgets.dart';
 import '../learning/learning_repository.dart';
 import '../learning/models.dart';
 import '../session/session_provider.dart';
+import 'formal_training_repository.dart';
 import 'mentorship_repository.dart';
 
 class MentorDashboard {
@@ -46,6 +47,7 @@ class MentorScreen extends ConsumerWidget {
     final l10n = context.l10n;
     final session = ref.watch(requireSessionProvider);
     final dash = ref.watch(mentorDashboardProvider);
+    final awaiting = ref.watch(formalTrainingsAwaitingMeProvider).value ?? [];
 
     return SafeArea(
       bottom: false,
@@ -53,6 +55,7 @@ class MentorScreen extends ConsumerWidget {
         onRefresh: () async {
           ref.invalidate(myTraineesProvider);
           ref.invalidate(myMentorRatingProvider);
+          ref.invalidate(formalTrainingsAwaitingMeProvider);
         },
         child: ListView(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
@@ -78,9 +81,20 @@ class MentorScreen extends ConsumerWidget {
                         padding: const EdgeInsets.only(bottom: 12),
                         child: _TraineeCard(mentorship: t, summary: d.summaries[t.traineeId]),
                       ),
-                    if (d.pending.isNotEmpty || checkinsDue.isNotEmpty) ...[
+                    if (d.pending.isNotEmpty || checkinsDue.isNotEmpty || awaiting.isNotEmpty) ...[
                       const SizedBox(height: 12),
                       SectionTitle(l10n.toDo),
+                      for (final t in awaiting)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: _TodoTile(
+                            icon: Icons.event_available_outlined,
+                            tone: Tone.warning,
+                            title: l10n.formalTrainingRequestTitle(t.traineeName ?? ''),
+                            subtitle: '${t.topic} · ${Fmt.dayTime(t.scheduledAt)}',
+                            onTap: () => context.push('/formal-training/${t.id}'),
+                          ),
+                        ),
                       for (final p in d.pending)
                         Padding(
                           padding: const EdgeInsets.only(bottom: 10),

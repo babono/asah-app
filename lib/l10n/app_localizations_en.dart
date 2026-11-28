@@ -1366,4 +1366,134 @@ class AppLocalizationsEn extends AppLocalizations {
   String notificationsUnread(int count) {
     return 'Notifications, $count new';
   }
+
+  @override
+  String get formalTraining => 'Formal training';
+
+  @override
+  String get formalTrainings => 'Formal trainings';
+
+  @override
+  String get requestFormalTraining => 'Request formal training';
+
+  @override
+  String get requestShort => 'Request';
+
+  @override
+  String formalTrainingIntro(String name) {
+    return 'A 30-minute training on the spot. $name approves the time, then your managers can see it and join.';
+  }
+
+  @override
+  String get formalTrainingTopic => 'Topic';
+
+  @override
+  String get formalTrainingTopicHint => 'e.g. Setting up the grill station';
+
+  @override
+  String get formalTrainingNote => 'Note (optional)';
+
+  @override
+  String get pickDate => 'Date';
+
+  @override
+  String get pickTime => 'Time';
+
+  @override
+  String get pickFutureTime => 'Pick a time in the future.';
+
+  @override
+  String get sendRequest => 'Send request';
+
+  @override
+  String formalTrainingRequestSent(String name) {
+    return 'Request sent to $name';
+  }
+
+  @override
+  String get noFormalTrainings => 'No formal trainings yet.';
+
+  @override
+  String ftWaitingFor(String name) {
+    return 'Waiting for $name';
+  }
+
+  @override
+  String get ftWaitingForYou => 'Waiting for you';
+
+  @override
+  String get ftScheduled => 'Scheduled';
+
+  @override
+  String get ftHeld => 'Held';
+
+  @override
+  String get ftDeclined => 'Declined';
+
+  @override
+  String get ftCancelled => 'Cancelled';
+
+  @override
+  String get ftExpired => 'Expired';
+
+  @override
+  String get approve => 'Approve';
+
+  @override
+  String get decline => 'Decline';
+
+  @override
+  String get declineFormalTraining => 'Decline this request?';
+
+  @override
+  String get reasonOptional => 'Reason (optional)';
+
+  @override
+  String get cancelFormalTraining => 'Cancel training';
+
+  @override
+  String cancelFormalTrainingConfirm(String name) {
+    return 'Cancel this formal training? $name will be told.';
+  }
+
+  @override
+  String get formalTrainingApproved => 'Formal training scheduled';
+
+  @override
+  String get formalTrainingDeclined => 'Request declined';
+
+  @override
+  String get formalTrainingCancelled => 'Formal training cancelled';
+
+  @override
+  String requestedByName(String name) {
+    return 'Requested by $name';
+  }
+
+  @override
+  String mentorWithTrainee(String mentor, String trainee) {
+    return '$mentor with $trainee';
+  }
+
+  @override
+  String formalTrainingRequestTitle(String name) {
+    return '$name asks for a formal training';
+  }
+
+  @override
+  String get managersCanJoin =>
+      'Once approved, outlet and area managers can see this session and may join.';
+
+  @override
+  String get managersCanJoinScheduled =>
+      'Outlet and area managers can see this session and may join.';
+
+  @override
+  String get formalTrainingsScheduled => 'Formal trainings scheduled';
+
+  @override
+  String get reply => 'Reply';
+
+  @override
+  String get youLabel => 'You';
 }

@@ -1282,4 +1282,134 @@ class AppLocalizationsId extends AppLocalizations {
   String notificationsUnread(int count) {
     return 'Notifikasi, $count baru';
   }
+
+  @override
+  String get formalTraining => 'Pelatihan formal';
+
+  @override
+  String get formalTrainings => 'Pelatihan formal';
+
+  @override
+  String get requestFormalTraining => 'Ajukan pelatihan formal';
+
+  @override
+  String get requestShort => 'Ajukan';
+
+  @override
+  String formalTrainingIntro(String name) {
+    return 'Pelatihan 30 menit langsung di tempat. $name menyetujui waktunya, lalu manajer Anda bisa melihat dan ikut hadir.';
+  }
+
+  @override
+  String get formalTrainingTopic => 'Topik';
+
+  @override
+  String get formalTrainingTopicHint => 'mis. Menyiapkan stasiun grill';
+
+  @override
+  String get formalTrainingNote => 'Catatan (opsional)';
+
+  @override
+  String get pickDate => 'Tanggal';
+
+  @override
+  String get pickTime => 'Jam';
+
+  @override
+  String get pickFutureTime => 'Pilih waktu yang akan datang.';
+
+  @override
+  String get sendRequest => 'Kirim permintaan';
+
+  @override
+  String formalTrainingRequestSent(String name) {
+    return 'Permintaan dikirim ke $name';
+  }
+
+  @override
+  String get noFormalTrainings => 'Belum ada pelatihan formal.';
+
+  @override
+  String ftWaitingFor(String name) {
+    return 'Menunggu $name';
+  }
+
+  @override
+  String get ftWaitingForYou => 'Menunggu Anda';
+
+  @override
+  String get ftScheduled => 'Terjadwal';
+
+  @override
+  String get ftHeld => 'Selesai';
+
+  @override
+  String get ftDeclined => 'Ditolak';
+
+  @override
+  String get ftCancelled => 'Dibatalkan';
+
+  @override
+  String get ftExpired => 'Kedaluwarsa';
+
+  @override
+  String get approve => 'Setujui';
+
+  @override
+  String get decline => 'Tolak';
+
+  @override
+  String get declineFormalTraining => 'Tolak permintaan ini?';
+
+  @override
+  String get reasonOptional => 'Alasan (opsional)';
+
+  @override
+  String get cancelFormalTraining => 'Batalkan pelatihan';
+
+  @override
+  String cancelFormalTrainingConfirm(String name) {
+    return 'Batalkan pelatihan formal ini? $name akan diberi tahu.';
+  }
+
+  @override
+  String get formalTrainingApproved => 'Pelatihan formal dijadwalkan';
+
+  @override
+  String get formalTrainingDeclined => 'Permintaan ditolak';
+
+  @override
+  String get formalTrainingCancelled => 'Pelatihan formal dibatalkan';
+
+  @override
+  String requestedByName(String name) {
+    return 'Diajukan oleh $name';
+  }
+
+  @override
+  String mentorWithTrainee(String mentor, String trainee) {
+    return '$mentor dengan $trainee';
+  }
+
+  @override
+  String formalTrainingRequestTitle(String name) {
+    return '$name mengajukan pelatihan formal';
+  }
+
+  @override
+  String get managersCanJoin =>
+      'Setelah disetujui, manajer outlet dan area bisa melihat sesi ini dan mungkin ikut hadir.';
+
+  @override
+  String get managersCanJoinScheduled =>
+      'Manajer outlet dan area bisa melihat sesi ini dan mungkin ikut hadir.';
+
+  @override
+  String get formalTrainingsScheduled => 'Pelatihan formal terjadwal';
+
+  @override
+  String get reply => 'Balasan';
+
+  @override
+  String get youLabel => 'Anda';
 }

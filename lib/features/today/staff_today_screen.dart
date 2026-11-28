@@ -9,6 +9,8 @@ import '../../core/widgets/widgets.dart';
 import '../checklists/checklist_repository.dart';
 import '../learning/learn_screen.dart';
 import '../learning/learning_repository.dart';
+import '../mentorship/formal_training_repository.dart';
+import '../mentorship/formal_training_screens.dart';
 import '../mentorship/mentorship_repository.dart';
 import '../notifications/notifications_screen.dart';
 import '../session/session_provider.dart';
@@ -36,6 +38,7 @@ class StaffTodayScreen extends ConsumerWidget {
           ref.invalidate(myRunsTodayProvider);
           ref.invalidate(myAssignmentsProvider);
           ref.invalidate(myMentorshipsProvider);
+          ref.invalidate(formalTrainingsProvider);
         },
         child: ListView(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
@@ -86,6 +89,7 @@ class StaffTodayScreen extends ConsumerWidget {
               const _LearningSummary(),
               const SizedBox(height: 12),
               const MentorCard(),
+              const _UpcomingFormalTrainings(),
             ],
             if (!session.canFill && !session.canLearn && session.hasAdminAccess)
               EmptyState(icon: Icons.desktop_windows_outlined, message: l10n.useAdminWeb),
@@ -157,6 +161,25 @@ class MentorCard extends ConsumerWidget {
           Pill(l10n.dayN(day)),
         ],
       ),
+    );
+  }
+}
+
+/// Open formal trainings with the mentor: requests to answer and scheduled ones.
+class _UpcomingFormalTrainings extends ConsumerWidget {
+  const _UpcomingFormalTrainings();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ms = ref.watch(myMentorshipsProvider).value?.where((m) => m.active).firstOrNull;
+    if (ms == null) return const SizedBox.shrink();
+    final list = (ref.watch(formalTrainingsProvider(ms.id)).value ?? [])
+        .where((t) => t.isOpen && !t.isPast && !t.expired)
+        .toList();
+    if (list.isEmpty) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: Column(children: [for (final t in list.take(3)) FormalTrainingTile(training: t)]),
     );
   }
 }

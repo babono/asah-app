@@ -2275,6 +2275,234 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Notifications, {count} new'**
   String notificationsUnread(int count);
+
+  /// No description provided for @formalTraining.
+  ///
+  /// In en, this message translates to:
+  /// **'Formal training'**
+  String get formalTraining;
+
+  /// No description provided for @formalTrainings.
+  ///
+  /// In en, this message translates to:
+  /// **'Formal trainings'**
+  String get formalTrainings;
+
+  /// No description provided for @requestFormalTraining.
+  ///
+  /// In en, this message translates to:
+  /// **'Request formal training'**
+  String get requestFormalTraining;
+
+  /// No description provided for @requestShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Request'**
+  String get requestShort;
+
+  /// No description provided for @formalTrainingIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'A 30-minute training on the spot. {name} approves the time, then your managers can see it and join.'**
+  String formalTrainingIntro(String name);
+
+  /// No description provided for @formalTrainingTopic.
+  ///
+  /// In en, this message translates to:
+  /// **'Topic'**
+  String get formalTrainingTopic;
+
+  /// No description provided for @formalTrainingTopicHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Setting up the grill station'**
+  String get formalTrainingTopicHint;
+
+  /// No description provided for @formalTrainingNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Note (optional)'**
+  String get formalTrainingNote;
+
+  /// No description provided for @pickDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get pickDate;
+
+  /// No description provided for @pickTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get pickTime;
+
+  /// No description provided for @pickFutureTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a time in the future.'**
+  String get pickFutureTime;
+
+  /// No description provided for @sendRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Send request'**
+  String get sendRequest;
+
+  /// No description provided for @formalTrainingRequestSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Request sent to {name}'**
+  String formalTrainingRequestSent(String name);
+
+  /// No description provided for @noFormalTrainings.
+  ///
+  /// In en, this message translates to:
+  /// **'No formal trainings yet.'**
+  String get noFormalTrainings;
+
+  /// No description provided for @ftWaitingFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for {name}'**
+  String ftWaitingFor(String name);
+
+  /// No description provided for @ftWaitingForYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for you'**
+  String get ftWaitingForYou;
+
+  /// No description provided for @ftScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled'**
+  String get ftScheduled;
+
+  /// No description provided for @ftHeld.
+  ///
+  /// In en, this message translates to:
+  /// **'Held'**
+  String get ftHeld;
+
+  /// No description provided for @ftDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'Declined'**
+  String get ftDeclined;
+
+  /// No description provided for @ftCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get ftCancelled;
+
+  /// No description provided for @ftExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get ftExpired;
+
+  /// No description provided for @approve.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve'**
+  String get approve;
+
+  /// No description provided for @decline.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline'**
+  String get decline;
+
+  /// No description provided for @declineFormalTraining.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline this request?'**
+  String get declineFormalTraining;
+
+  /// No description provided for @reasonOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason (optional)'**
+  String get reasonOptional;
+
+  /// No description provided for @cancelFormalTraining.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel training'**
+  String get cancelFormalTraining;
+
+  /// No description provided for @cancelFormalTrainingConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel this formal training? {name} will be told.'**
+  String cancelFormalTrainingConfirm(String name);
+
+  /// No description provided for @formalTrainingApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Formal training scheduled'**
+  String get formalTrainingApproved;
+
+  /// No description provided for @formalTrainingDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'Request declined'**
+  String get formalTrainingDeclined;
+
+  /// No description provided for @formalTrainingCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Formal training cancelled'**
+  String get formalTrainingCancelled;
+
+  /// No description provided for @requestedByName.
+  ///
+  /// In en, this message translates to:
+  /// **'Requested by {name}'**
+  String requestedByName(String name);
+
+  /// No description provided for @mentorWithTrainee.
+  ///
+  /// In en, this message translates to:
+  /// **'{mentor} with {trainee}'**
+  String mentorWithTrainee(String mentor, String trainee);
+
+  /// No description provided for @formalTrainingRequestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} asks for a formal training'**
+  String formalTrainingRequestTitle(String name);
+
+  /// No description provided for @managersCanJoin.
+  ///
+  /// In en, this message translates to:
+  /// **'Once approved, outlet and area managers can see this session and may join.'**
+  String get managersCanJoin;
+
+  /// No description provided for @managersCanJoinScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Outlet and area managers can see this session and may join.'**
+  String get managersCanJoinScheduled;
+
+  /// No description provided for @formalTrainingsScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Formal trainings scheduled'**
+  String get formalTrainingsScheduled;
+
+  /// No description provided for @reply.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply'**
+  String get reply;
+
+  /// No description provided for @youLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get youLabel;
 }
 
 class _AppLocalizationsDelegate

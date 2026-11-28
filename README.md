@@ -28,6 +28,9 @@ Tabs come from the person's permissions (`rpc('my_permissions')`):
   quiz graded on the server, practical test recorded in the app, certificates (T1–T3, T8, T10).
 - **Mentor**: trainees with progress and alerts, score practical tests per rubric line, weekly
   check-ins, own average rating after 3 ratings (M2–M4, M7).
+- **Formal training**: a mentor or trainee requests a 30-minute on-the-spot training for a date and
+  time; the other approves or declines it. Approved sessions show on the outlet manager's Today
+  (and the area manager's outlet view) so managers can join.
 - **Outlet manager**: today's checklists by shift, open issues, trainees behind; assign issues,
   accept or reopen fixes, assign mentors and refresher modules, spot-check sign-offs (A7, S1, S2,
   M1, M5, M6, T9).

@@ -938,5 +938,95 @@
         "type": "int"
       }
     }
-  }
+  },
+  "formalTraining": "Formal training",
+  "formalTrainings": "Formal trainings",
+  "requestFormalTraining": "Request formal training",
+  "requestShort": "Request",
+  "formalTrainingIntro": "A 30-minute training on the spot. {name} approves the time, then your managers can see it and join.",
+  "@formalTrainingIntro": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "formalTrainingTopic": "Topic",
+  "formalTrainingTopicHint": "e.g. Setting up the grill station",
+  "formalTrainingNote": "Note (optional)",
+  "pickDate": "Date",
+  "pickTime": "Time",
+  "pickFutureTime": "Pick a time in the future.",
+  "sendRequest": "Send request",
+  "formalTrainingRequestSent": "Request sent to {name}",
+  "@formalTrainingRequestSent": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "noFormalTrainings": "No formal trainings yet.",
+  "ftWaitingFor": "Waiting for {name}",
+  "@ftWaitingFor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "ftWaitingForYou": "Waiting for you",
+  "ftScheduled": "Scheduled",
+  "ftHeld": "Held",
+  "ftDeclined": "Declined",
+  "ftCancelled": "Cancelled",
+  "ftExpired": "Expired",
+  "approve": "Approve",
+  "decline": "Decline",
+  "declineFormalTraining": "Decline this request?",
+  "reasonOptional": "Reason (optional)",
+  "cancelFormalTraining": "Cancel training",
+  "cancelFormalTrainingConfirm": "Cancel this formal training? {name} will be told.",
+  "@cancelFormalTrainingConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "formalTrainingApproved": "Formal training scheduled",
+  "formalTrainingDeclined": "Request declined",
+  "formalTrainingCancelled": "Formal training cancelled",
+  "requestedByName": "Requested by {name}",
+  "@requestedByName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "mentorWithTrainee": "{mentor} with {trainee}",
+  "@mentorWithTrainee": {
+    "placeholders": {
+      "mentor": {
+        "type": "String"
+      },
+      "trainee": {
+        "type": "String"
+      }
+    }
+  },
+  "formalTrainingRequestTitle": "{name} asks for a formal training",
+  "@formalTrainingRequestTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "managersCanJoin": "Once approved, outlet and area managers can see this session and may join.",
+  "managersCanJoinScheduled": "Outlet and area managers can see this session and may join.",
+  "formalTrainingsScheduled": "Formal trainings scheduled",
+  "reply": "Reply",
+  "youLabel": "You"
 }
