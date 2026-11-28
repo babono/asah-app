@@ -5,6 +5,7 @@ import '../../core/l10n/l10n.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/utils/format.dart';
 import '../../core/widgets/widgets.dart';
+import 'formal_training_screens.dart';
 import 'mentorship_repository.dart';
 import 'trainee_detail_screen.dart';
 
@@ -46,6 +47,8 @@ class MyMentorScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 12),
             Text(l10n.mentorHelpNote, style: Theme.of(context).textTheme.bodySmall),
+            const SizedBox(height: 24),
+            FormalTrainingSection(mentorship: m),
             const SizedBox(height: 24),
             SectionTitle(l10n.weeklyCheckins),
             AsyncBody(

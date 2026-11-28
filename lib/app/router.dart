@@ -13,6 +13,7 @@ import '../features/learning/module_screen.dart';
 import '../features/learning/practical_record_screen.dart';
 import '../features/learning/quiz_screen.dart';
 import '../features/mentorship/checkin_screen.dart';
+import '../features/mentorship/formal_training_screens.dart';
 import '../features/mentorship/my_mentor_screen.dart';
 import '../features/mentorship/practical_score_screen.dart';
 import '../features/mentorship/rate_mentor_screen.dart';
@@ -61,6 +62,9 @@ final routerProvider = Provider<GoRouter>((ref) {
       route('/mentor/trainee/:id', (s) => TraineeDetailScreen(mentorshipId: p(s, 'id'))),
       route('/mentor/score/:id', (s) => PracticalScoreScreen(submissionId: p(s, 'id'))),
       route('/mentor/checkin/:id', (s) => CheckinScreen(mentorshipId: p(s, 'id'))),
+      route('/formal-training/new/:mentorshipId',
+          (s) => RequestFormalTrainingScreen(mentorshipId: p(s, 'mentorshipId'))),
+      route('/formal-training/:id', (s) => FormalTrainingDetailScreen(trainingId: p(s, 'id'))),
       route('/my-mentor/:id', (s) => MyMentorScreen(mentorshipId: p(s, 'id'))),
       route('/rate-mentor/:id', (s) => RateMentorScreen(mentorshipId: p(s, 'id'))),
       route('/team/signoffs', (_) => const SignoffsScreen()),

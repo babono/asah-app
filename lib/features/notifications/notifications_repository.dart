@@ -40,6 +40,7 @@ String? routeForNotification(String type, Map<String, dynamic> data) {
   if (data['run_id'] != null) return '/checklist/${data['run_id']}';
   if (data['issue_id'] != null) return '/issues/${data['issue_id']}';
   if (data['submission_id'] != null) return '/mentor/score/${data['submission_id']}';
+  if (data['formal_training_id'] != null) return '/formal-training/${data['formal_training_id']}';
   if (data['mentorship_id'] != null) return '/mentor/checkin/${data['mentorship_id']}';
   if (data['certificate_id'] != null) return '/certificates';
   if (type == 'trainee_behind' && data['user_id'] != null) return '/team/${data['user_id']}';

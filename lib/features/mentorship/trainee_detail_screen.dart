@@ -8,6 +8,8 @@ import '../../core/utils/format.dart';
 import '../../core/widgets/widgets.dart';
 import '../learning/learning_repository.dart';
 import '../learning/widgets.dart';
+import 'formal_training_repository.dart';
+import 'formal_training_screens.dart';
 import 'mentorship_repository.dart';
 
 /// A trainee's path, quiz results and check-ins, for their mentor (M2, M3).
@@ -37,10 +39,13 @@ class TraineeDetailScreen extends ConsumerWidget {
             onRefresh: () async {
               ref.invalidate(userAssignmentsProvider((userId: m.traineeId, positionId: m.traineePositionId)));
               ref.invalidate(checkinsProvider(m.id));
+              ref.invalidate(formalTrainingsProvider(m.id));
             },
             child: ListView(
               padding: const EdgeInsets.all(16),
               children: [
+                FormalTrainingSection(mentorship: m),
+                const SizedBox(height: 24),
                 SectionTitle(
                   l10n.weeklyCheckins,
                   trailing: m.active

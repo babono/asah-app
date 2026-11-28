@@ -67,6 +67,7 @@ class NotificationsScreen extends ConsumerWidget {
   static IconData _icon(String type) {
     if (type.startsWith('issue')) return Icons.report_problem_outlined;
     if (type.startsWith('checklist')) return Icons.fact_check_outlined;
+    if (type.startsWith('formal_training')) return Icons.event_available_outlined;
     if (type.startsWith('practical') || type.startsWith('trainee') || type.startsWith('mentor')) return Icons.people_outline;
     if (type.startsWith('certificate')) return Icons.verified_outlined;
     if (type.startsWith('checkin')) return Icons.event_note_outlined;

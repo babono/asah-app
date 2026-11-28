@@ -12,6 +12,8 @@ import '../checklists/checklist_repository.dart';
 import '../checklists/models.dart';
 import '../issues/issue_repository.dart';
 import '../issues/issue_widgets.dart';
+import '../mentorship/formal_training_repository.dart';
+import '../mentorship/formal_training_screens.dart';
 import '../mentorship/mentorship_repository.dart';
 import '../notifications/notifications_screen.dart';
 import '../session/people.dart';
@@ -58,6 +60,7 @@ class ManagerTodayScreen extends ConsumerWidget {
       ref.invalidate(outletIssuesProvider(outlet.id));
       ref.invalidate(behindAtOutletProvider(outlet.id));
       ref.invalidate(outletMentorshipsProvider(outlet.id));
+      ref.invalidate(outletFormalTrainingsProvider(outlet.id));
       ref.invalidate(myRunsTodayProvider);
     }
 
@@ -115,6 +118,7 @@ class ManagerTodayScreen extends ConsumerWidget {
           ),
           const SizedBox(height: 14),
           _TrainingSection(outletId: outlet.id),
+          _FormalTrainingsSection(outletId: outlet.id),
           if (!standalone && session.canFill) ...[
             const SizedBox(height: 24),
             const _MyTasks(),
@@ -275,6 +279,26 @@ class _TrainingSection extends ConsumerWidget {
             );
           },
         ),
+      ],
+    );
+  }
+}
+
+/// Approved formal trainings at the outlet, so managers can drop in.
+class _FormalTrainingsSection extends ConsumerWidget {
+  const _FormalTrainingsSection({required this.outletId});
+  final String outletId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final list = ref.watch(outletFormalTrainingsProvider(outletId)).value ?? [];
+    if (list.isEmpty) return const SizedBox.shrink();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const SizedBox(height: 14),
+        SectionTitle(context.l10n.formalTrainingsScheduled),
+        for (final t in list.take(6)) FormalTrainingTile(training: t, showPeople: true),
       ],
     );
   }
